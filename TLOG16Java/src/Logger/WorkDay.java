@@ -74,9 +74,48 @@ public class WorkDay {
           
            
 /*
- * getExtraMinPerDay():long method, which calculates the difference between requiredMinPerDay and sumPerDay
- * the isSeparatedTime(Task t):boolean method should be able to decide if the t Task has a common time interval with any existing Task's time interval in the tasks list
- * addTask(Task t):void add a task to the list of tasks, if length is multiple of the quarter hour and the task time intervals have no common parts, the else part will be implemented later
+ * long getExtraMinPerDay():
+ *        long method, which calculates the difference between requiredMinPerDay and sumPerDay
+ */
+           public long getExtraMinPerDay() {
+               
+               return this.sumPerDay-this.requiredMinPerDay;
+               
+           }
+/*
+ * boolean isSeparatedTime(Task t):
+ *         boolean method should be able to decide if the t Task has a common time interval with any 
+ *         existing Task's time interval in the tasks list
+ */
+           
+           public boolean isSeparatedTime(Task t) {
+               
+               for (Task t1: this.tasks) {
+                   if (t1.getStartTime() == t.getStartTime() || t.getEndTime() == t1.getEndTime() ){
+                       return true;
+                   }
+                   
+                   if (Duration.between(t1.getStartTime(), t.getStartTime()).toMinutes() > 0 && Duration.between(t.getStartTime(), t1.getEndTime()).toMinutes() > 0 ){
+                       return true;
+                   }
+                   
+                   if (Duration.between(t.getEndTime(), t1.getEndTime()).toMinutes() > 0 && Duration.between(t1.getStartTime(), t.getEndTime()).toMinutes() > 0 ){
+                       return true;
+                   }
+               
+               }
+               
+               
+               
+               return false;
+           }
+           
+/*
+ * void addTask(Task t):
+ *         void add a task to the list of tasks, if length is multiple of the quarter hour and the task
+ *         time intervals have no common parts, the else part will be implemented later
+ */
+/*
  * isWeekday():boolean decide if actual day is a weekday 
  */
            
