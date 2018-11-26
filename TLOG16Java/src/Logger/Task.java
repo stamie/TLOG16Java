@@ -84,7 +84,7 @@ public class Task {
       
       long minutes = Duration.between(this.startTime, this.endTime).toMinutes();
       
-      if (minutes % 15 == 0 && minutes > 0) {
+      if (minutes % 15 == 0 && minutes > 15) {
           
           return true;
           
