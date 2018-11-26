@@ -1,4 +1,4 @@
-package WorkDay;
+package Logger;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,7 +6,7 @@ package WorkDay;
  */
 import java.time.*;
 import java.util.List;
-import Task.*;
+import Logger.Task;
 /**
  *
  * @author stampel
