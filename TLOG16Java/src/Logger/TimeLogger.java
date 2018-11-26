@@ -22,4 +22,12 @@ public class TimeLogger {
         
     }
     
+    
+/*
+    -TimeLogger class's methods:
+getter for months
+isNewMonth(WorkMonth):boolean decides, if this month already exists or not
+addMonth(WorkMonth):void  adds a new month to the months list if it is new
+    */    
+    
 }
