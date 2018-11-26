@@ -19,34 +19,48 @@ import Logger.Task;
 public class WorkDay {
     
            List <Task> tasks;
-           long requiredMinPerDay = 450;
+           long requiredMinPerDay;
            LocalDate actualDay;
            long sumPerDay; //calculations
            
-           WorkDay( List <Task> tasksI,
-                    LocalDate actualDayI,
-                    long requiredMinPerDayI// = null
+           WorkDay( LocalDate actualDayI,
+                    long requiredMinPerDayI
            ) {
                
-               this.tasks = tasksI;
                this.requiredMinPerDay = requiredMinPerDayI;
                this.actualDay = actualDayI;
-               this.calculateSumPerDay();
-           
-           
-           
            }
-           WorkDay( List <Task> tasksI,
-                    LocalDate actualDayI
+           
+           WorkDay( long requiredMinPerDayI
            ) {
                
-               this.tasks = tasksI;
+               this.requiredMinPerDay = requiredMinPerDayI;
+               this.actualDay = LocalDate.now();
+           }
+           
+           WorkDay( LocalDate actualDayI
+           ) {
+               this.requiredMinPerDay = 450;
                this.actualDay = actualDayI;
-               this.calculateSumPerDay();
-           
-           
            
            }
+           
+           WorkDay() {
+               this.requiredMinPerDay = 450;
+               this.actualDay = LocalDate.now();
+           
+           }
+ /*
+  * getters for requiredMinPerDay, sumPerDay and actualDay 
+  */
+           
+           
+/*
+ * getExtraMinPerDay():long method, which calculates the difference between requiredMinPerDay and sumPerDay
+ * the isSeparatedTime(Task t):boolean method should be able to decide if the t Task has a common time interval with any existing Task's time interval in the tasks list
+ * addTask(Task t):void add a task to the list of tasks, if length is multiple of the quarter hour and the task time intervals have no common parts, the else part will be implemented later
+ * isWeekday():boolean decide if actual day is a weekday 
+ */
            
            private void calculateSumPerDay() {
                
