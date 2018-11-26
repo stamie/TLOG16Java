@@ -50,10 +50,28 @@ public class WorkDay {
                this.actualDay = LocalDate.now();
            
            }
- /*
+ /* 
   * getters for requiredMinPerDay, sumPerDay and actualDay 
   */
+           public long getRequiredMinPerDay() {
+               
+               return this.requiredMinPerDay;
            
+           }
+           
+           public long getSumPerDay() {
+                
+               return this.sumPerDay;
+           
+           }
+           
+           public LocalDate getActualDay() {
+               
+               return this.actualDay;
+               
+           }
+            
+          
            
 /*
  * getExtraMinPerDay():long method, which calculates the difference between requiredMinPerDay and sumPerDay
