@@ -115,24 +115,53 @@ public class WorkDay {
  *         void add a task to the list of tasks, if length is multiple of the quarter hour and the task
  *         time intervals have no common parts, the else part will be implemented later
  */
+           
+           public void addTask(Task t) {
+               
+               if (t.isMultipleQuarterHour() && !this.isSeparatedTime(t)) {
+                   
+                   this.insertTask(t);
+               
+               }
+               
+               
+               
+           }
+           
+           private void insertTask(Task t) {
+               
+               boolean first = true;
+               for (Task t1: this.tasks) {
+                  
+                   if (first && Duration.between(t.getEndTime(), t1.getStartTime()).toMinutes() >= 0) {
+                       
+                       this.tasks.add(0, t);
+                       return;
+                   
+                   
+                   }
+                   
+                   first = false;
+                   
+                   
+                   if (Duration.between(t1.getEndTime(), t.getStartTime()).toMinutes() >= 0) {
+                       
+                       this.tasks.add(t);
+                       return;
+                       
+                   }
+               
+               }
+               return;
+           
+           }
 /*
  * isWeekday():boolean decide if actual day is a weekday 
  */
            
-           private void calculateSumPerDay() {
-               
-               this.sumPerDay = 0;
-               for(Task task: this.tasks){
-                   
-                   Duration duration = Duration.between(task.getStartTime(), task.getEndTime());
-               
-                   this.sumPerDay += duration.toMinutes();
-           
-               }
            
            
            
-           }
- 
+           
     
 }
