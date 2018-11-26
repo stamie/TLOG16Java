@@ -7,6 +7,8 @@ package Logger;
 import java.time.*;
 import java.util.List;
 import Logger.Task;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author stampel
@@ -158,10 +160,20 @@ public class WorkDay {
 /*
  * isWeekday():boolean decide if actual day is a weekday 
  */
+           public boolean isWeekday() {
+               
+               DateTimeFormatter format = DateTimeFormatter.ofPattern("a");
+               
+               String str = this.actualDay.format(format);
+               
+               if (str == "Sun" || str == "Sat") {
+                   
+                   return false;
+                   
+               }
+               
+               return true;
            
+           }
            
-           
-           
-           
-    
 }
