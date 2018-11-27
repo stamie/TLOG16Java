@@ -5,7 +5,6 @@ package Logger;
  * and open the template in the editor.
  */
 import java.time.*;
-import Logger.Util;
 /**
  *
  * @author stampel
@@ -15,14 +14,13 @@ import Logger.Util;
  *      endTime   :LocalTime
  *      comment   :String
  */
-public class Task extends Util{
-  /*
+public class Util {
   protected      String        taskId;
   protected      LocalTime     startTime;
   protected      LocalTime     endTime;
   protected      String        comment;
-    
-  Task (String        taskIdI,
+  
+  Util (String        taskIdI,
         String        commentI,
         LocalTime     startTimeI,
         LocalTime     endTimeI) {
@@ -33,7 +31,7 @@ public class Task extends Util{
     this.comment = commentI;
   
   }
-  Task (String        taskIdI,
+  Util (String        taskIdI,
         LocalTime     startTimeI,
         LocalTime     endTimeI) {
       
@@ -43,7 +41,6 @@ public class Task extends Util{
     this.comment = startTimeI.getHour()+":"+startTime.getMinute();
   
   }
-    */
   
   public String getTaskId() {
     
@@ -77,6 +74,23 @@ public class Task extends Util{
       return this.taskId.matches(regExp);
   }
   
-
+  
+/*
+ * boolean isMultipleQuarterHour():
+ *   boolean (check if the time interval's length is multiple of the quarter hour)
+ */
+  
+  public boolean isMultipleQuarterHour() {
+      
+      long minutes = Duration.between(this.startTime, this.endTime).toMinutes();
+      
+      if (minutes % 15 == 0 && minutes > 15) {
+          
+          return true;
+          
+      }
+      
+      return false;
+  }
     
 }
