@@ -27,9 +27,37 @@ public class WorkMonth {
     private long requiredMinPerMonth;
     
     /*
-    WorkMonth class's methods: 
-constructor which has a year, and a month paramater, but in the constructor from this informations you should create the date field
-getters for all the fields 
+     * WorkMonth class's methods: 
+     * constructor which has a year, and a month paramater, 
+     * but in the constructor from this informations you should create the date field
+     */
+    
+    WorkMonth(int year, int month) {
+        
+        this.date = LocalDate.parse(year + "-" + month);
+    
+    
+    }
+    
+    /* getters for all the fields */
+    public LocalDate getDate() {
+        
+        return this.date;
+        
+    }
+    public long getSumPerMonth() {
+        
+        return this.sumPerMonth;
+        
+    }
+    
+    public long getRequiredMinPerMonth() {
+        
+        return this.requiredMinPerMonth;
+        
+    }
+    
+    /*
 getExtraMinPerMonth():long method should calculate, how many extra minutes did the employee work in the actual month
 isNewDate(WorkDay):boolean method decides if this day is already existing or not
 isSameMonth(WorkDay): boolean method decides, if this day should be in this month or it fits into an other month by date
