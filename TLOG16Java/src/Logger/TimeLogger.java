@@ -24,10 +24,44 @@ public class TimeLogger {
     
     
 /*
-    -TimeLogger class's methods:
-getter for months
-isNewMonth(WorkMonth):boolean decides, if this month already exists or not
-addMonth(WorkMonth):void  adds a new month to the months list if it is new
-    */    
+ * getter for months
+ */
+    public List<WorkMonth> getMonths() {
+        
+        return this.months;
+        
+    }
+/*
+ * boolean isNewMonth(WorkMonth):
+ * boolean decides, if this month already exists or not
+ */
+    
+    public boolean isNewMonth(WorkMonth wm) {
+        
+        for (WorkMonth wm2: this.months) {
+            if (wm2.getDate() == wm.getDate()) {
+                return false;
+            }
+        }
+        return true;
+    
+    
+    
+    }
+/*
+ * void addMonth(WorkMonth):
+ * void  adds a new month to the months list if it is new
+ */
+    public void addMonth(WorkMonth wm) {
+        
+        if (this.isNewMonth(wm)) {
+            
+            this.months.add(wm);
+        
+        }
+        
+    }
+
+    
     
 }

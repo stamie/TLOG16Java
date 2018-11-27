@@ -20,10 +20,10 @@ import java.time.format.DateTimeFormatter;
  */
 public class WorkDay {
     
-           List <Task> tasks;
-           long requiredMinPerDay;
-           LocalDate actualDay;
-           long sumPerDay; //calculations
+           private List <Task> tasks;
+           private long requiredMinPerDay;
+           private LocalDate actualDay;
+           private long sumPerDay; //calculations
            
            WorkDay( LocalDate actualDayI,
                     long requiredMinPerDayI
@@ -132,12 +132,20 @@ public class WorkDay {
            
            private void insertTask(Task t) {
                
+               if (this.tasks.isEmpty()) {
+                   this.tasks.add(0, t);
+                   this.sumPerDay = Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
+                   return;
+                   
+               }
+               
                boolean first = true;
                for (Task t1: this.tasks) {
                   
                    if (first && Duration.between(t.getEndTime(), t1.getStartTime()).toMinutes() >= 0) {
                        
                        this.tasks.add(0, t);
+                       this.sumPerDay += Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
                        return;
                    
                    
@@ -149,11 +157,14 @@ public class WorkDay {
                    if (Duration.between(t1.getEndTime(), t.getStartTime()).toMinutes() >= 0) {
                        
                        this.tasks.add(t);
+                       this.sumPerDay += Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
                        return;
                        
                    }
                
                }
+               
+               
                return;
            
            }
