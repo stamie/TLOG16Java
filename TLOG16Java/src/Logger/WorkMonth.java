@@ -57,12 +57,73 @@ public class WorkMonth {
         
     }
     
-    /*
-getExtraMinPerMonth():long method should calculate, how many extra minutes did the employee work in the actual month
-isNewDate(WorkDay):boolean method decides if this day is already existing or not
-isSameMonth(WorkDay): boolean method decides, if this day should be in this month or it fits into an other month by date
-addWorkDay(WorkDay wd, boolean isWeekendEnabled):void add a day to the list of days, if isWeekendEnabled=true. Do not add the day to the list of days, if actualDay is on the weekend and isWeekendEnabled=false. The isWeekendEnabled boolean parameter has default value=false (it means there will be an overloaded method). You should also check if the WorkDay is in this month, and if it is existing already or not .
-*/
+ /*
+  *  long getExtraMinPerMonth():
+  *  long method should calculate, how many extra minutes did the employee work in the actual month
+  */
+    public long getExtraMinPerMonth() {
+    
+        return this.sumPerMonth-this.requiredMinPerMonth;
+    
+    }
+
+/*
+ * boolean isNewDate(WorkDay):
+ * boolean method decides if this day is already existing or not
+ */
+    
+    public boolean isNewDate(WorkDay workDayI) {
+        
+        for (WorkDay day: this.days) {
+            if (day.getActualDay() == workDayI.getActualDay()) {
+                
+                return false;
+                
+            }
+                
+        }
+    
+        return true;
+    }
+/*
+ * boolean isSameMonth(WorkDay): 
+ * boolean method decides, if this day should be in this month or it fits into an other month by date
+ */
+    public  boolean isSameMonth(WorkDay workDayI) {
+        
+        return (workDayI.getActualDay().getMonth() == this.date.getMonth() && workDayI.getActualDay().getYear() == this.date.getYear());
+            
+    }
+/*   
+ * void addWorkDay(WorkDay wd, boolean isWeekendEnabled):
+ * void add a day to the list of days, if isWeekendEnabled=true.
+ * Do not add the day to the list of days, if actualDay is on the weekend and isWeekendEnabled=false. 
+ * The isWeekendEnabled boolean parameter has default value=false 
+ * (it means there will be an overloaded method). You should also check if the WorkDay is in this month, 
+ * and if it is existing already or not .
+ */
+    public void addWorkDay(WorkDay wd, boolean isWeekendEnabled){
+    
+           if (!wd.isWeekday() && !isWeekendEnabled) {
+               
+               return;
+               
+           }
+           
+           if (this.isNewDate(wd) && this.isSameMonth(wd)) {
+               
+               this.days.add(wd);
+               
+           }
+           
+           return;
+    }
+    
+    public void addWorkDay(WorkDay wd){
+        
+        this.addWorkDay(wd, false);
+    
+    }
     
     
 }
