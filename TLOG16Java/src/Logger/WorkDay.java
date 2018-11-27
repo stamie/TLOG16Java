@@ -20,10 +20,10 @@ import java.time.format.DateTimeFormatter;
  */
 public class WorkDay {
     
-           List <Task> tasks;
-           long requiredMinPerDay;
-           LocalDate actualDay;
-           long sumPerDay; //calculations
+           private List <Task> tasks;
+           private long requiredMinPerDay;
+           private LocalDate actualDay;
+           private long sumPerDay; //calculations
            
            WorkDay( LocalDate actualDayI,
                     long requiredMinPerDayI
