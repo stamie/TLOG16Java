@@ -1,4 +1,4 @@
-package WorkDay;
+package Logger;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,7 +6,9 @@ package WorkDay;
  */
 import java.time.*;
 import java.util.List;
-import Task.*;
+import Logger.Task;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author stampel
@@ -19,49 +21,159 @@ import Task.*;
 public class WorkDay {
     
            List <Task> tasks;
-           long requiredMinPerDay = 450;
+           long requiredMinPerDay;
            LocalDate actualDay;
            long sumPerDay; //calculations
            
-           WorkDay( List <Task> tasksI,
-                    LocalDate actualDayI,
-                    long requiredMinPerDayI// = null
+           WorkDay( LocalDate actualDayI,
+                    long requiredMinPerDayI
            ) {
                
-               this.tasks = tasksI;
                this.requiredMinPerDay = requiredMinPerDayI;
                this.actualDay = actualDayI;
-               this.calculateSumPerDay();
-           
-           
-           
            }
-           WorkDay( List <Task> tasksI,
-                    LocalDate actualDayI
+           
+           WorkDay( long requiredMinPerDayI
            ) {
                
-               this.tasks = tasksI;
+               this.requiredMinPerDay = requiredMinPerDayI;
+               this.actualDay = LocalDate.now();
+           }
+           
+           WorkDay( LocalDate actualDayI
+           ) {
+               this.requiredMinPerDay = 450;
                this.actualDay = actualDayI;
-               this.calculateSumPerDay();
-           
-           
            
            }
            
-           private void calculateSumPerDay() {
+           WorkDay() {
+               this.requiredMinPerDay = 450;
+               this.actualDay = LocalDate.now();
+           
+           }
+ /* 
+  * getters for requiredMinPerDay, sumPerDay and actualDay 
+  */
+           public long getRequiredMinPerDay() {
                
-               this.sumPerDay = 0;
-               for(Task task: this.tasks){
+               return this.requiredMinPerDay;
+           
+           }
+           
+           public long getSumPerDay() {
+                
+               return this.sumPerDay;
+           
+           }
+           
+           public LocalDate getActualDay() {
+               
+               return this.actualDay;
+               
+           }
+            
+          
+           
+/*
+ * long getExtraMinPerDay():
+ *        long method, which calculates the difference between requiredMinPerDay and sumPerDay
+ */
+           public long getExtraMinPerDay() {
+               
+               return this.sumPerDay-this.requiredMinPerDay;
+               
+           }
+/*
+ * boolean isSeparatedTime(Task t):
+ *         boolean method should be able to decide if the t Task has a common time interval with any 
+ *         existing Task's time interval in the tasks list
+ */
+           
+           public boolean isSeparatedTime(Task t) {
+               
+               for (Task t1: this.tasks) {
+                   if (t1.getStartTime() == t.getStartTime() || t.getEndTime() == t1.getEndTime() ){
+                       return true;
+                   }
                    
-                   Duration duration = Duration.between(task.getStartTime(), task.getEndTime());
+                   if (Duration.between(t1.getStartTime(), t.getStartTime()).toMinutes() > 0 && Duration.between(t.getStartTime(), t1.getEndTime()).toMinutes() > 0 ){
+                       return true;
+                   }
+                   
+                   if (Duration.between(t.getEndTime(), t1.getEndTime()).toMinutes() > 0 && Duration.between(t1.getStartTime(), t.getEndTime()).toMinutes() > 0 ){
+                       return true;
+                   }
                
-                   this.sumPerDay += duration.toMinutes();
-           
                }
+               
+               
+               
+               return false;
+           }
            
+/*
+ * void addTask(Task t):
+ *         void add a task to the list of tasks, if length is multiple of the quarter hour and the task
+ *         time intervals have no common parts, the else part will be implemented later
+ */
            
+           public void addTask(Task t) {
+               
+               if (t.isMultipleQuarterHour() && !this.isSeparatedTime(t)) {
+                   
+                   this.insertTask(t);
+               
+               }
+               
+               
+               
+           }
+           
+           private void insertTask(Task t) {
+               
+               boolean first = true;
+               for (Task t1: this.tasks) {
+                  
+                   if (first && Duration.between(t.getEndTime(), t1.getStartTime()).toMinutes() >= 0) {
+                       
+                       this.tasks.add(0, t);
+                       return;
+                   
+                   
+                   }
+                   
+                   first = false;
+                   
+                   
+                   if (Duration.between(t1.getEndTime(), t.getStartTime()).toMinutes() >= 0) {
+                       
+                       this.tasks.add(t);
+                       return;
+                       
+                   }
+               
+               }
+               return;
            
            }
- 
-    
+/*
+ * isWeekday():boolean decide if actual day is a weekday 
+ */
+           public boolean isWeekday() {
+               
+               DateTimeFormatter format = DateTimeFormatter.ofPattern("a");
+               
+               String str = this.actualDay.format(format);
+               
+               if (str == "Sun" || str == "Sat") {
+                   
+                   return false;
+                   
+               }
+               
+               return true;
+           
+           }
+           
 }
