@@ -5,7 +5,7 @@ package Logger;
  * and open the template in the editor.
  */
 import java.time.*;
-import Logger.Util;
+import Logger.UtilTask;
 /**
  *
  * @author stampel
@@ -15,8 +15,16 @@ import Logger.Util;
  *      endTime   :LocalTime
  *      comment   :String
  */
-public class Task extends Util{
-  /*
+public class Task extends UtilTask{
+
+    public Task(String taskIdI, String commentI, LocalTime startTimeI, LocalTime endTimeI) {
+        super(taskIdI, commentI, startTimeI, endTimeI);
+    }
+    public Task(String taskIdI, LocalTime startTimeI, LocalTime endTimeI) {
+        super(taskIdI, startTimeI, endTimeI);
+    }
+
+  /*  
   protected      String        taskId;
   protected      LocalTime     startTime;
   protected      LocalTime     endTime;
@@ -43,8 +51,7 @@ public class Task extends Util{
     this.comment = startTimeI.getHour()+":"+startTime.getMinute();
   
   }
-    */
-  
+      
   public String getTaskId() {
     
     return this.taskId;
@@ -65,6 +72,7 @@ public class Task extends Util{
     return this.comment;
 
   }
+    */
   
 /*
  * boolean isValidTaskId():

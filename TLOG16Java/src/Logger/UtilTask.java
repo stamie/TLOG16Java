@@ -14,13 +14,16 @@ import java.time.*;
  *      endTime   :LocalTime
  *      comment   :String
  */
-public class Util {
+public class UtilTask {
+    
+  
   protected      String        taskId;
   protected      LocalTime     startTime;
   protected      LocalTime     endTime;
   protected      String        comment;
+    
   
-  Util (String        taskIdI,
+  UtilTask (String        taskIdI,
         String        commentI,
         LocalTime     startTimeI,
         LocalTime     endTimeI) {
@@ -31,7 +34,7 @@ public class Util {
     this.comment = commentI;
   
   }
-  Util (String        taskIdI,
+  UtilTask (String        taskIdI,
         LocalTime     startTimeI,
         LocalTime     endTimeI) {
       
@@ -61,17 +64,6 @@ public class Util {
     
     return this.comment;
 
-  }
-  
-/*
- * boolean isValidTaskId():
- *   boolean (Valid Ids: 4 digits or LT-{4 digits} for example: LT-4863)
- */
-  
-  public boolean isValidTaskId() {
-      
-      String regExp = "(L)(T)(-)\\d\\d\\d\\d";
-      return this.taskId.matches(regExp);
   }
   
   
