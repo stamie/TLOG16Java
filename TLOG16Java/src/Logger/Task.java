@@ -16,6 +16,10 @@ import Logger.UtilTask;
  *      comment   :String
  */
 public class Task extends UtilTask{
+    
+    private int[] startTimeHM;
+    private int[] endTimeHM;
+    private String day;
 
     public Task(String taskIdI, String commentI, LocalTime startTimeI, LocalTime endTimeI) {
         super(taskIdI, commentI, startTimeI, endTimeI);
@@ -23,6 +27,8 @@ public class Task extends UtilTask{
     public Task(String taskIdI, LocalTime startTimeI, LocalTime endTimeI) {
         super(taskIdI, startTimeI, endTimeI);
     }
+    
+    
 
   /*  
   protected      String        taskId;
