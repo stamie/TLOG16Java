@@ -22,14 +22,19 @@ public class WorkDay {
     
            private List <Task> tasks;
            private long requiredMinPerDay;
-           private LocalDate actualDay;
+           private int[] actualDay;
            private long sumPerDay; //calculations
            
-           WorkDay( LocalDate actualDayI,
+           WorkDay( int[] actualDayI,
                     long requiredMinPerDayI
            ) {
                
                this.requiredMinPerDay = requiredMinPerDayI;
+               if (actualDayI.length != 3) {
+                   System.out.println("Is array problem");
+                   return;
+               }
+               this.actualDay = new int[3];
                this.actualDay = actualDayI;
            }
            
@@ -37,20 +42,32 @@ public class WorkDay {
            ) {
                
                this.requiredMinPerDay = requiredMinPerDayI;
-               this.actualDay = LocalDate.now();
+               LocalDate now = LocalDate.now();
+               this.actualDay = new int[3];
+               this.actualDay[0] = now.getYear();
+               this.actualDay[1] = now.getMonthValue();
+               this.actualDay[2] = now.getDayOfMonth();
            }
            
-           WorkDay( LocalDate actualDayI
+           WorkDay( int[] actualDayI
            ) {
                this.requiredMinPerDay = 450;
+               if (actualDayI.length != 3) {
+                   System.out.println("Is array problem");
+                   return;
+               }
+               this.actualDay = new int[3];
                this.actualDay = actualDayI;
            
            }
            
            WorkDay() {
                this.requiredMinPerDay = 450;
-               this.actualDay = LocalDate.now();
-           
+               LocalDate now = LocalDate.now();
+               this.actualDay = new int[3];
+               this.actualDay[0] = now.getYear();
+               this.actualDay[1] = now.getMonthValue();
+               this.actualDay[2] = now.getDayOfMonth();
            }
  /* 
   * getters for requiredMinPerDay, sumPerDay and actualDay 
@@ -69,7 +86,7 @@ public class WorkDay {
            
            public LocalDate getActualDay() {
                
-               return this.actualDay;
+               return LocalDate.of(this.actualDay[0],this.actualDay[1],this.actualDay[2]);
                
            }
             
@@ -175,7 +192,9 @@ public class WorkDay {
                
                DateTimeFormatter format = DateTimeFormatter.ofPattern("a");
                
-               String str = this.actualDay.format(format);
+               LocalDate aDay = this.getActualDay();
+               
+               String str = aDay.format(format);
                
                if (str == "Sun" || str == "Sat") {
                    
