@@ -9,6 +9,8 @@ package Logger;
 import java.time.*;
 import java.util.List;
 import Logger.WorkDay;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,9 +34,10 @@ public class WorkMonth {
      * but in the constructor from this informations you should create the date field
      */
     
-    WorkMonth(int year, int month) {
+    public WorkMonth(int year, int month) {
         
-        this.date = LocalDate.parse(year + "-" + month);
+        this.date = LocalDate.parse(year + "-" + month +"-1", DateTimeFormatter.ofPattern("yyyy-M-d"));
+        this.days = new ArrayList();
     
     
     }

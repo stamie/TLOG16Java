@@ -9,6 +9,7 @@ import Logger.Task;
 import Logger.WorkDay;
 import Logger.WorkMonth;
 import Logger.TimeLogger;
+import java.util.Scanner;
 
 
 /**
@@ -122,8 +123,16 @@ ask for end time (format: 12:45, with validation)*/
     public void listTasks(TimeLogger timeLogger) {
 
     }
-
+    
     public void addNewMonth(TimeLogger timeLogger) {
+        
+        Scanner in = new Scanner(System.in);
+        System.out.print("Year: ");
+        int year = in.nextInt();
+        System.out.print("Month: ");
+        int month = in.nextInt();
+        WorkMonth wm = new WorkMonth(year, month);
+        timeLogger.addMonth(wm);
 
     }
 
