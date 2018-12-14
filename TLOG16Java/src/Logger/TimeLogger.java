@@ -16,7 +16,7 @@ public class TimeLogger {
     
     private List<WorkMonth> months;
     
-    TimeLogger(List<WorkMonth> monthsI) {
+    public TimeLogger(List<WorkMonth> monthsI) {
         
         this.months = monthsI;
         
@@ -30,6 +30,23 @@ public class TimeLogger {
         
         return this.months;
         
+    }
+    /*
+ * List for months
+ */
+    public boolean listMonths() {
+        
+        int i = 1;
+     
+        for(WorkMonth month: this.months) {
+            
+            System.out.print(i + ". " + month.getDate().getYear() + "-" + month.getDate().getMonth() + ", ");
+            i++;
+            
+        }
+        if (i > 1)
+        return true;
+        return false;
     }
 /*
  * boolean isNewMonth(WorkMonth):
