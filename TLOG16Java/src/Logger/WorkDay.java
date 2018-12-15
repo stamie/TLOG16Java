@@ -8,6 +8,7 @@ import java.time.*;
 import java.util.List;
 import Logger.Task;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,7 +26,7 @@ public class WorkDay {
            private int[] actualDay;
            private long sumPerDay; //calculations
            
-           WorkDay( int[] actualDayI,
+           public WorkDay( int[] actualDayI,
                     long requiredMinPerDayI
            ) {
                
@@ -36,9 +37,10 @@ public class WorkDay {
                }
                this.actualDay = new int[3];
                this.actualDay = actualDayI;
+               this.tasks = new ArrayList();
            }
            
-           WorkDay( long requiredMinPerDayI
+           public WorkDay( long requiredMinPerDayI
            ) {
                
                this.requiredMinPerDay = requiredMinPerDayI;
@@ -47,9 +49,10 @@ public class WorkDay {
                this.actualDay[0] = now.getYear();
                this.actualDay[1] = now.getMonthValue();
                this.actualDay[2] = now.getDayOfMonth();
+               this.tasks = new ArrayList();
            }
            
-           WorkDay( int[] actualDayI
+           public WorkDay( int[] actualDayI
            ) {
                this.requiredMinPerDay = 450;
                if (actualDayI.length != 3) {
@@ -58,16 +61,18 @@ public class WorkDay {
                }
                this.actualDay = new int[3];
                this.actualDay = actualDayI;
+               this.tasks = new ArrayList();
            
            }
            
-           WorkDay() {
+           public WorkDay() {
                this.requiredMinPerDay = 450;
                LocalDate now = LocalDate.now();
                this.actualDay = new int[3];
                this.actualDay[0] = now.getYear();
                this.actualDay[1] = now.getMonthValue();
                this.actualDay[2] = now.getDayOfMonth();
+               this.tasks = new ArrayList();
            }
  /* 
   * getters for requiredMinPerDay, sumPerDay and actualDay 
