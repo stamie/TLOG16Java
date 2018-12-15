@@ -198,6 +198,7 @@ ask for end time (format: 12:45, with validation)*/
         int day;
         while (1 == 1) {
             System.out.print("Add day: ");
+
             day = in.nextInt();
             if (day > 0 && day < 32) {
                 break;
@@ -212,7 +213,18 @@ ask for end time (format: 12:45, with validation)*/
 
         //ask the required working hours, default value=7.5
         System.out.print("Required working hours: ");
-        float hours = in.nextFloat();
+
+        String hoursString = in.nextLine();
+        float hours;
+        try {
+            hours = Float.parseFloat(hoursString);
+        } catch (NullPointerException ex) {
+            hours = (float) 7.5;
+        } catch (NumberFormatException ex) {
+            System.out.println("Is wrong input! Then hours = 7.5!");
+            hours = (float) 7.5;
+        }
+
         float minuteFloat = hours * 60;
 
         int minute = (int) minuteFloat;
@@ -228,6 +240,11 @@ ask for end time (format: 12:45, with validation)*/
 
     }
 
+    /* Start a task for a day:
+    -ask for month, day, task id, what you do (comment)
+    -ask for start time in format 10:30 
+        -if there is a task in the day, get the end time of the last task and show it in braces! If the user enters an empty value, save that time in the task!
+    -don't ask for the end time! */
     public void startTask(TimeLogger timeLogger) {
 
     }
