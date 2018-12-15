@@ -11,7 +11,6 @@ import Logger.WorkMonth;
 import Logger.TimeLogger;
 import java.util.Scanner;
 
-
 /**
  *
  * @author stampel
@@ -109,23 +108,54 @@ ask for end time (format: 12:45, with validation)*/
     public void listMonths(TimeLogger timeLogger) {
 
         System.out.println("List of month:");
-        if (!timeLogger.listMonths())
+        if (!timeLogger.listMonths()) {
             System.out.println("No items");
+        }
         System.out.println();
         return;
 
     }
 
     public void listDays(TimeLogger timeLogger) {
+        this.listMonths(timeLogger);
+        
+        if (timeLogger.getMonths().size() == 0) {
+            return;
+        }
+        
+        Scanner in = new Scanner(System.in);
+        int monthNum;
+        while (1 == 1) {
+            System.out.print("Months number is: ");
+            monthNum = in.nextInt();
+
+            if (monthNum > timeLogger.getMonths().size() || monthNum < 1) {
+                System.out.println("Wrong number");
+            } else {
+                break;
+            }
+        }
+        
+        monthNum--;
+        
+        WorkMonth month = timeLogger.getMonths().get(monthNum);
+        
+        if (!month.listDays()){
+            System.out.println("It haven't work days.");
+        
+        }
+        
+        
+        
 
     }
 
     public void listTasks(TimeLogger timeLogger) {
 
     }
-    
+
     public void addNewMonth(TimeLogger timeLogger) {
-        
+
         Scanner in = new Scanner(System.in);
         System.out.print("Year: ");
         int year = in.nextInt();
