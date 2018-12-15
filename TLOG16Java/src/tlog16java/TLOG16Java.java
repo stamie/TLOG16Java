@@ -30,10 +30,10 @@ public class TLOG16Java {
         while (1 == 1) {
 
             int i = in.nextInt();
-            System.out.println(i);
+            //System.out.println(i);
             TimeLoggerUI tlui = new TimeLoggerUI();
             if (!tlui.TimeLoggerUICreat(i, TL)) {
-
+                
                 return;
             }
         }

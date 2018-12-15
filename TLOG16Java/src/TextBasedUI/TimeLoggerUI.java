@@ -142,9 +142,10 @@ ask for end time (format: 12:45, with validation)*/
         
         if (!month.listDays()) {
             System.out.println("It haven't work days.");
+            return;
             
         }
-        
+        System.out.println();
     }
     
     public void listTasks(TimeLogger timeLogger) {

@@ -118,8 +118,20 @@ public class WorkMonth {
         }
 
         if (this.isNewDate(wd) && this.isSameMonth(wd)) {
+            int i = 0;
+            if (this.days.isEmpty()) {
+                
+                this.days.add(wd);
+                return;
 
-            this.days.add(wd);
+            }
+            for (WorkDay workDay : this.days) {
+                if (workDay.getActualDay().getDayOfYear() > wd.getActualDay().getDayOfYear()) {
+
+                    this.days.add(i, wd);
+                    return;
+                }
+            }
 
         }
 
@@ -137,7 +149,7 @@ public class WorkMonth {
 
         for (WorkDay day : this.days) {
 
-            System.out.print(i + ". " + day.getActualDayToString());
+            System.out.print(i + ". " + day.getActualDayToString() + "; ");
             i++;
         }
 
