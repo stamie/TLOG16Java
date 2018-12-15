@@ -95,11 +95,29 @@ public class TimeLogger {
                     this.months.add(i, wm);
                     return;
                 }
+
             }
             this.months.add(wm);
 
         }
 
+    }
+
+    public void updateMonth(WorkMonth wm) {
+     
+        if (!this.isNewMonth(wm)) {
+        
+            int i = -1;
+
+            for (WorkMonth month : this.months) {
+                i++;
+                if (month.getDate().getMonthValue() == wm.getDate().getMonthValue() && month.getDate().getYear() == wm.getDate().getYear()) {
+                    this.months.remove(i);
+                    this.months.add(i, wm);
+                    return;
+                }
+            }
+        }
     }
 
 }

@@ -8,7 +8,9 @@ import java.time.*;
 import java.util.List;
 import Logger.Task;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  *
@@ -204,7 +206,7 @@ public class WorkDay {
                
                LocalDate aDay = this.getActualDay();
                
-               String str = aDay.format(format);
+               String str = aDay.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ROOT);
                
                if (str == "Sun" || str == "Sat") {
                    
