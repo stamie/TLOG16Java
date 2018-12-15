@@ -43,6 +43,10 @@ public class WorkMonth {
     }
     
     /* getters for all the fields */
+    public List<WorkDay> getDays() {
+        return this.days;
+    }
+    
     public LocalDate getDate() {
         
         return this.date;
@@ -126,6 +130,22 @@ public class WorkMonth {
         
         this.addWorkDay(wd, false);
     
+    }
+    
+    public boolean listDays() {
+        int i = 1;
+        
+        for (WorkDay day: this.days) {
+        
+            System.out.print(i + ". " + day.getActualDayToString());
+        }
+        
+        if (i > 1) {
+            return true;
+        }
+        return false;
+    
+        
     }
     
     

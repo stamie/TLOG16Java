@@ -94,6 +94,11 @@ public class WorkDay {
                return LocalDate.of(this.actualDay[0],this.actualDay[1],this.actualDay[2]);
                
            }
+           public String getActualDayToString() {
+               
+               return this.actualDay[0]+"-"+this.actualDay[1]+"-"+this.actualDay[2];
+               
+           }
             
           
            
