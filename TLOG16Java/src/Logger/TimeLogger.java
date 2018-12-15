@@ -7,6 +7,7 @@ package Logger;
 
 import java.util.List;
 import Logger.WorkMonth;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,7 +19,14 @@ public class TimeLogger {
     
     public TimeLogger(List<WorkMonth> monthsI) {
         
+        this.months = new ArrayList();
         this.months = monthsI;
+        
+    }
+    public TimeLogger() {
+        
+        this.months = new ArrayList();
+        //this.months = monthsI;
         
     }
     
