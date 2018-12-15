@@ -42,11 +42,11 @@ ask for end time (format: 12:45, with validation)
 10. Statistics: ask for month, then print the statistics of the month, and the statistics of the days of this month
  */
 public class TimeLoggerUI {
-    
+
     public boolean TimeLoggerUICreat(int input, TimeLogger timeLogger) {
-        
+
         switch (input) {
-            
+
             case 0: // Exit
                 return false;
             case 1: // List months: shows a counter, the year & the month line by line (example: 1. 2016-09, 2. 2016-10, ...)
@@ -58,7 +58,7 @@ lists the months, select one by ask for row number
 list all workdays of this month */
                 listDays(timeLogger);
                 break;
-            
+
             case 3: // List tasks for a specific day (ask for month & day)
                 listTasks(timeLogger);
                 break;
@@ -101,59 +101,59 @@ ask for end time (format: 12:45, with validation)*/
                 System.out.println("Wrong function key!");
                 break;
         }
-        
+
         return true;
     }
-    
+
     public void listMonths(TimeLogger timeLogger) {
-        
+
         System.out.println("List of month:");
         if (!timeLogger.listMonths()) {
             System.out.println("No items");
         }
         System.out.println();
         return;
-        
+
     }
-    
+
     public void listDays(TimeLogger timeLogger) {
         this.listMonths(timeLogger);
-        
-        if (timeLogger.getMonths().size() == 0) {
+
+        if (timeLogger.getMonths().isEmpty()) {
             return;
         }
-        
+
         Scanner in = new Scanner(System.in);
         int monthNum;
         while (1 == 1) {
             System.out.print("Months number is: ");
             monthNum = in.nextInt();
-            
+
             if (monthNum > timeLogger.getMonths().size() || monthNum < 1) {
                 System.out.println("Wrong number");
             } else {
                 break;
             }
         }
-        
+
         monthNum--;
-        
+
         WorkMonth month = timeLogger.getMonths().get(monthNum);
-        
+
         if (!month.listDays()) {
             System.out.println("It haven't work days.");
             return;
-            
+
         }
         System.out.println();
     }
-    
+
     public void listTasks(TimeLogger timeLogger) {
-        
+
     }
-    
+
     public void addNewMonth(TimeLogger timeLogger) {
-        
+
         Scanner in = new Scanner(System.in);
         System.out.print("Year: ");
         int year = in.nextInt();
@@ -161,7 +161,7 @@ ask for end time (format: 12:45, with validation)*/
         int month = in.nextInt();
         WorkMonth wm = new WorkMonth(year, month);
         timeLogger.addMonth(wm);
-        
+
     }
 
     /*
@@ -172,23 +172,26 @@ ask for end time (format: 12:45, with validation)*/
         -ask the required working hours, default value=7.5
      */
     public void addDay(TimeLogger timeLogger) {
-        
+
         this.listMonths(timeLogger); //list the workmonths (2. menu item)
 
+        if (timeLogger.getMonths().isEmpty()) {
+            return;
+        }
         //ask the index of workmonth:
         Scanner in = new Scanner(System.in);
         int month;
         while (1 == 1) {
             System.out.print("Months number is: ");
             month = in.nextInt();
-            
+
             if (month > timeLogger.getMonths().size() || month < 1) {
                 System.out.println("Wrong number!");
             } else {
                 break;
             }
         }
-        
+
         month--;
 
         //ask the day
@@ -201,7 +204,7 @@ ask for end time (format: 12:45, with validation)*/
             }
             System.out.println("Wrong daynumber!s");
         }
-        
+
         int[] actualDay = new int[3];
         actualDay[0] = timeLogger.getMonths().get(month).getDate().getYear();
         actualDay[1] = timeLogger.getMonths().get(month).getDate().getMonthValue();
@@ -211,9 +214,9 @@ ask for end time (format: 12:45, with validation)*/
         System.out.print("Required working hours: ");
         float hours = in.nextFloat();
         float minuteFloat = hours * 60;
-        System.out.println(minuteFloat);
+
         int minute = (int) minuteFloat;
-        
+
         WorkDay wd = new WorkDay(actualDay, minute);
         WorkMonth wm = timeLogger.getMonths().get(month);
         wm.addWorkDay(wd);
@@ -222,27 +225,27 @@ ask for end time (format: 12:45, with validation)*/
         } else {
             timeLogger.updateMonth(wm);
         }
-        
+
     }
-    
+
     public void startTask(TimeLogger timeLogger) {
-        
+
     }
-    
+
     public void finishASpecificTask(TimeLogger timeLogger) {
-        
+
     }
-    
+
     public void deleteTask(TimeLogger timeLogger) {
-        
+
     }
-    
+
     public void modifyTask(TimeLogger timeLogger) {
-        
+
     }
-    
+
     public void statistics(TimeLogger timeLogger) {
-        
+
     }
-    
+
 }
