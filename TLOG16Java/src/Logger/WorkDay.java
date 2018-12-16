@@ -162,7 +162,7 @@ public class WorkDay {
            private void insertTask(Task t) {
                
                if (this.tasks.isEmpty()) {
-                   this.tasks.add(0, t);
+                   this.tasks.add(t);
                    this.sumPerDay = Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
                    return;
                    
