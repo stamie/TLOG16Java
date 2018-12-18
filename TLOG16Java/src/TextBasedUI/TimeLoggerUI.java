@@ -238,13 +238,13 @@ ask for end time (format: 12:45, with validation)*/
             hours = (float) 7.5;
             System.out.println("It hasen't input! Then hours = 7.5! " + ex.getMessage());
         } catch (NullPointerException ex) {
-            System.out.println("Is wrong input2! Then hours = 7.5!");
+            System.out.println("Is wrong input! Then hours = 7.5!");
             hours = (float) 7.5;
         } catch (NumberFormatException ex) {
-            System.out.println("Is wrong input3! Then hours = 7.5! " + ex.getMessage());
+            System.out.println("Is wrong input! Then hours = 7.5! " + ex.getMessage());
             hours = (float) 7.5;
         } catch (IllegalStateException ex) {
-            System.out.println("Is wrong input4! Then hours = 7.5! " + ex.getMessage());
+            System.out.println("Is wrong input! Then hours = 7.5! " + ex.getMessage());
             hours = (float) 7.5;
         }
 
