@@ -118,11 +118,11 @@ ask for end time (format: 12:45, with validation)*/
 
     }
 
-    public void listDays(TimeLogger timeLogger) {
+    public WorkMonth listDays(TimeLogger timeLogger) {
         this.listMonths(timeLogger);
 
         if (timeLogger.getMonths().isEmpty()) {
-            return;
+            return null;
         }
 
         Scanner in = new Scanner(System.in);
@@ -144,20 +144,36 @@ ask for end time (format: 12:45, with validation)*/
 
         if (!month.listDays()) {
             System.out.println("It haven't work days.");
-            return;
+            return null;
 
         }
         System.out.println();
+        return month;
     }
 
     // List tasks for a specific day (ask for month & day)
     public void listTasks(TimeLogger timeLogger) {
 
-        this.listDays(timeLogger);
-        Scanner in = new Scanner(System.in);
-        int num = in.nextInt();
-        System.out.println(num);
+        WorkMonth wm = this.listDays(timeLogger);
+        if (wm != null) {
+            int dayNum = 0;
+            //try{
+            while ((dayNum > wm.getDays().size() || dayNum == 0) && wm.getDays().size() > 0) {
+                Scanner in = new Scanner(System.in);
+                dayNum = in.nextInt();
+            }
 
+            //TODO: write the tasks list printer
+            if (dayNum > 0) {
+                WorkDay wd = wm.getDays().get(--dayNum);
+
+                wd.listTask();
+                return;
+
+            }
+
+        }
+        return;
     }
 
     public void addNewMonth(TimeLogger timeLogger) {
@@ -222,7 +238,6 @@ ask for end time (format: 12:45, with validation)*/
         //ask the required working hours, default value=7.5
         System.out.print("Required working hours: ");
 
-        //String hoursString = in.nextLine();
         float hours;
         try {
             Scanner in2 = new Scanner(System.in);
