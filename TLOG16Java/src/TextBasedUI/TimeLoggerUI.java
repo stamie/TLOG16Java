@@ -9,6 +9,8 @@ import Logger.Task;
 import Logger.WorkDay;
 import Logger.WorkMonth;
 import Logger.TimeLogger;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -148,7 +150,13 @@ ask for end time (format: 12:45, with validation)*/
         System.out.println();
     }
 
+    // List tasks for a specific day (ask for month & day)
     public void listTasks(TimeLogger timeLogger) {
+
+        this.listDays(timeLogger);
+        Scanner in = new Scanner(System.in);
+        int num = in.nextInt();
+        System.out.println(num);
 
     }
 
@@ -214,14 +222,29 @@ ask for end time (format: 12:45, with validation)*/
         //ask the required working hours, default value=7.5
         System.out.print("Required working hours: ");
 
-        String hoursString = in.nextLine();
+        //String hoursString = in.nextLine();
         float hours;
         try {
+            Scanner in2 = new Scanner(System.in);
+            String hoursString;
+            hoursString = "";
+
+            hoursString += in2.nextLine();
+            System.out.println("hoursString: " + hoursString);
             hours = Float.parseFloat(hoursString);
+
+            hours = Float.parseFloat(hoursString);
+        } catch (NoSuchElementException ex) {
+            hours = (float) 7.5;
+            System.out.println("It hasen't input! Then hours = 7.5! " + ex.getMessage());
         } catch (NullPointerException ex) {
+            System.out.println("Is wrong input2! Then hours = 7.5!");
             hours = (float) 7.5;
         } catch (NumberFormatException ex) {
-            System.out.println("Is wrong input! Then hours = 7.5!");
+            System.out.println("Is wrong input3! Then hours = 7.5! " + ex.getMessage());
+            hours = (float) 7.5;
+        } catch (IllegalStateException ex) {
+            System.out.println("Is wrong input4! Then hours = 7.5! " + ex.getMessage());
             hours = (float) 7.5;
         }
 
