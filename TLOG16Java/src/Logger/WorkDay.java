@@ -86,6 +86,12 @@ public class WorkDay {
 
     }
 
+    public List<Task> getTasks() {
+
+        return this.tasks;
+
+    }
+
     public long getSumPerDay() {
 
         return this.sumPerDay;
@@ -119,7 +125,6 @@ public class WorkDay {
  *         boolean method should be able to decide if the t Task has a common time interval with any 
  *         existing Task's time interval in the tasks list
      */
-
     public boolean isSeparatedTime(Task t) {
 
         for (Task t1 : this.tasks) {
@@ -217,13 +222,45 @@ public class WorkDay {
         int i = 1;
 
         for (Task task : this.tasks) {
-            System.out.println(i + "." + task.getStartTime() + " - " + task.getEndTime() + " TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
+
+            if (task.getEndTime() != null) {
+                System.out.println(i + "." + task.getStartTime() + " - " + task.getEndTime() + " TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
+            } else {
+                System.out.println(i + "." + task.getStartTime() + " - null  TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
+            }
             i++;
         }
 
         if (i == 1) {
             System.out.println("Haven't got Tasks");
         }
+
+    }
+
+    public boolean isNewTask(Task TaskI) {
+
+        return true;
+    }
+
+    public void updateTask(Task TaskI) {
+
+        if (!this.isNewTask(TaskI)) {
+
+            int i = -1;
+
+            for (Task task : this.tasks) {
+                i++;
+                if (task.getStartTime() == TaskI.getStartTime()) {
+                    this.tasks.remove(i);
+                    this.tasks.add(i, TaskI);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void setTasks(List<Task> tasksI) {
+        this.tasks = tasksI;
 
     }
 

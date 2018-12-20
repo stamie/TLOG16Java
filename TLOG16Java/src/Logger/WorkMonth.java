@@ -120,7 +120,7 @@ public class WorkMonth {
         if (this.isNewDate(wd) && this.isSameMonth(wd)) {
             int i = 0;
             if (this.days.isEmpty()) {
-                
+
                 this.days.add(wd);
                 return;
 
@@ -158,6 +158,23 @@ public class WorkMonth {
         }
         return false;
 
+    }
+
+    public void updateWorkDay(WorkDay workDayI) {
+
+        if (!this.isNewDate(workDayI)) {
+
+            int i = -1;
+
+            for (WorkDay workDay : this.days) {
+                i++;
+                if (workDay.getActualDayToString() == workDayI.getActualDayToString()) {
+                    this.days.remove(i);
+                    this.days.add(i, workDayI);
+                    return;
+                }
+            }
+        }
     }
 
 }

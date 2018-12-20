@@ -6,6 +6,7 @@ package Logger;
  * and open the template in the editor.
  */
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
@@ -253,23 +254,7 @@ public class Task implements Util {
 
         } catch (DateTimeParseException ex) {
 
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
-        try {
-
-            LocalTime l = LocalTime.parse(this.endTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.endTimeArray = new int[2];
-            this.endTimeArray[0] = hour;
-            this.endTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
 
         }
 
@@ -331,8 +316,11 @@ public class Task implements Util {
     }
 
     public LocalTime getEndTime() {
-
-        return LocalTime.parse(this.endTimeString);
+        try {
+            return LocalTime.parse(this.endTimeString);
+        } catch (NullPointerException ex) {
+            return null;
+        }
 
     }
 
