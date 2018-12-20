@@ -381,4 +381,37 @@ public class Task implements Util {
         return false;
     }
 
+    public void endTaskWithString(String endTimeStringI) {
+
+        try {
+            this.endTimeString = endTimeStringI;
+            this.endTimeArray = new int[2];
+            this.endTimeArray[0] = LocalTime.parse(this.endTimeString).getHour();
+            this.endTimeArray[1] = LocalTime.parse(this.endTimeString).getMinute();
+
+        } catch (DateTimeParseException ex) {
+            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+        }
+
+    }
+
+    public void endTaskWithArray(int[] endTimeArrayI) {
+
+        if (endTimeArrayI.length != 2) {
+            System.out.println("Wrong Input!");
+            return;
+        }
+
+        try {
+            this.endTimeString = endTimeArrayI[0] + ":" + endTimeArrayI[1];
+            LocalTime.parse(this.endTimeString);
+            this.endTimeArray = new int[2];
+            this.endTimeArray = endTimeArrayI;
+
+        } catch (DateTimeParseException ex) {
+            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+        }
+
+    }
+
 }
