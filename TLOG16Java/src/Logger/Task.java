@@ -193,22 +193,7 @@ public class Task implements Util {
 
         }
 
-        try {
-
-            LocalTime l = LocalTime.parse(this.endTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.endTimeArray = new int[2];
-            this.endTimeArray[0] = hour;
-            this.endTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
+      
     }
 
     public Task(String taskIdI,
