@@ -172,7 +172,32 @@ ask for end time (format: 12:45, with validation)*/
             if (dayNum > 0) {
                 WorkDay wd = wm.getDays().get(--dayNum);
 
-                wd.listTask();
+                wd.listTask(true);
+                return wd;
+
+            }
+
+        }
+        return null;
+    }
+
+    public WorkDay listTasksNotTheEnd(TimeLogger timeLogger) {
+
+        WorkMonth wm = this.listDays(timeLogger);
+        if (wm != null) {
+            int dayNum = 0;
+
+            while ((dayNum > wm.getDays().size() || dayNum == 0) && wm.getDays().size() > 0) {
+                System.out.print("Day number is: ");
+                Scanner in = new Scanner(System.in);
+                dayNum = in.nextInt();
+            }
+
+            //TODO: testing the tasks list printer
+            if (dayNum > 0) {
+                WorkDay wd = wm.getDays().get(--dayNum);
+
+                wd.listTask(false);
                 return wd;
 
             }
@@ -288,8 +313,74 @@ ask for end time (format: 12:45, with validation)*/
     -ask for start time in format 10:30 
         -if there is a task in the day, get the end time of the last task and show it in braces! If the user enters an empty value, save that time in the task!
     -don't ask for the end time! */
-    public void startTask(TimeLogger timeLogger) {
+    public void finishASpecificTask(TimeLogger timeLogger) {
 
+        try {
+
+            WorkDay day = this.listTasksNotTheEnd(timeLogger);
+            if (day.getTasks().size() == 0) {
+                System.out.println("Not unfinished tasks!");
+                return;
+            }
+            Scanner in = new Scanner(System.in);
+            int taskNumber;
+            while (1 == 1) {
+                System.out.print("Task Number: ");
+                taskNumber = in.nextInt();
+                if (taskNumber > 0 && taskNumber <= day.getTasks().size()) {
+                    break;
+
+                }
+            }
+
+            Task taskI = day.getTasks().get(--taskNumber);
+
+            List<WorkMonth> months = timeLogger.getMonths();
+
+            int monthNumber = 0;
+            for (WorkMonth month : months) {
+
+                if (month.getDate().getYear() == day.getActualDay().getYear() && month.getDate().getMonthValue() == day.getActualDay().getMonthValue()) {
+                    break;
+                }
+                monthNumber++;
+
+            }
+            int dayNumber = 0;
+            for (WorkDay wd : months.get(monthNumber).getDays()) {
+                if (wd.getActualDay().getDayOfYear() == day.getActualDay().getDayOfYear()) {
+                    break;
+                }
+                dayNumber++;
+
+            }
+            int taskN = 0;
+            for (Task t : months.get(monthNumber).getDays().get(dayNumber).getTasks()) {
+                if (t.equals(taskI)) {
+                    break;
+
+                }
+                taskN++;
+            }
+            
+            Scanner in2 = new Scanner(System.in);
+            System.out.print("End Time: ");
+            String time = in2.nextLine();
+            
+            if (time.isEmpty()) {
+                time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+            }
+            
+
+            timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).getTasks().get(taskN).endTaskWithString(time); //timeLogger.updateMonth(workMonth);
+
+        } catch (DateTimeParseException ex) {
+            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
+            return;
+        }
+    }
+
+    public void startTask(TimeLogger timeLogger) {
         try {
             WorkMonth workMonth = this.listDays(timeLogger);
 
@@ -352,9 +443,6 @@ ask for end time (format: 12:45, with validation)*/
             System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
             return;
         }
-    }
-
-    public void finishASpecificTask(TimeLogger timeLogger) {
 
     }
 

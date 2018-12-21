@@ -217,18 +217,25 @@ public class WorkDay {
 
     }
 
-    public void listTask() {
+    public void listTask(boolean bool) {
 
         int i = 1;
 
         for (Task task : this.tasks) {
 
-            if (task.getEndTime() != null) {
+            if (task.getEndTime() != null && bool) {
                 System.out.println(i + "." + task.getStartTime() + " - " + task.getEndTime() + " TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
+                i++;
             } else {
                 System.out.println(i + "." + task.getStartTime() + " - null  TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
+                if (!bool && task.getEndTime() != null) {
+                    this.tasks.remove(i);
+                    i--;
+                }
+                i++;
+
             }
-            i++;
+
         }
 
         if (i == 1) {
