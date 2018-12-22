@@ -258,12 +258,29 @@ public class WorkDay {
             for (Task task : this.tasks) {
                 i++;
                 if (task.getStartTime() == TaskI.getStartTime()) {
+
+                    this.sumPerDay -= Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
                     this.tasks.remove(i);
-                    this.tasks.add(i, TaskI);
+                    this.addTask(TaskI);
                     return;
                 }
             }
         }
+    }
+
+    public void deleteTask(int index) {
+
+        if (this.tasks.isEmpty()) {
+            return;
+        }
+
+        if (index < 0 || index >= this.tasks.size()) {
+            return;
+        }
+        Task task = this.tasks.get(index);
+        this.sumPerDay -= Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
+        this.tasks.remove(index);
+
     }
 
     public void setTasks(List<Task> tasksI) {
