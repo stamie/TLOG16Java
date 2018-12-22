@@ -152,7 +152,8 @@ public class WorkDay {
      */
     public void addTask(Task t) {
 
-        if (t.isMultipleQuarterHour() && !this.isSeparatedTime(t)) {
+        if (t.isMultipleQuarterHour()
+                && !this.isSeparatedTime(t)) {
 
             this.insertTask(t);
 
@@ -163,8 +164,15 @@ public class WorkDay {
     private void insertTask(Task t) {
 
         if (this.tasks.isEmpty()) {
+            this.tasks = new ArrayList();
             this.tasks.add(t);
-            this.sumPerDay = Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
+
+            this.sumPerDay = 0;
+
+            if (t.getStartTime() != null && t.getEndTime() != null) {
+                this.sumPerDay = Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
+            }
+
             return;
 
         }
@@ -283,9 +291,9 @@ public class WorkDay {
 
     }
 
-    public void setTasks(List<Task> tasksI) {
+    /*public void setTasks(List<Task> tasksI) {
         this.tasks = tasksI;
 
-    }
-
+    }*
+     */
 }

@@ -193,7 +193,6 @@ public class Task implements Util {
 
         }
 
-      
     }
 
     public Task(String taskIdI,
@@ -343,6 +342,9 @@ public class Task implements Util {
      */
     public boolean isMultipleQuarterHour() {
 
+        if (this.startTimeArray == null || this.endTimeArray == null) {
+            return true;
+        }
         long minutes = Duration.between(LocalTime.parse(this.startTimeString), LocalTime.parse(this.endTimeString)).toMinutes();
 
         if (minutes % 15 == 0 && minutes > 15) {
@@ -352,6 +354,7 @@ public class Task implements Util {
         }
 
         return false;
+
     }
 
     public void endTaskWithString(String endTimeStringI) {
