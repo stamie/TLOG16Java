@@ -492,15 +492,64 @@ ask for end time (format: 12:45, with validation)*/
         }
 
         int taskNumber = 0;
+        //The task number input,
         while (1 == 1) {
             System.out.print("Task number: ");
-            //TODO: Make the task number input,
-            break;
+            Scanner in = new Scanner(System.in);
+            taskNumber = in.nextInt();
+            if (taskNumber > 0 && taskNumber <= timeLogger.getMonths().get(mdIndex[0]).getDays().size()) {
+                break;
+            }
 
         }
-        //Task task = timeLogger.getMonths().get(mdIndex[0])
-        //TODO: 
 
+        Task task = timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).getTasks().get(taskNumber);
+
+        Scanner in = new Scanner(System.in);
+        System.out.print("Task Id: (" + task.getTaskId() + ") ");
+        String taskIdI = in.nextLine();
+        if (taskIdI.isEmpty()) {
+            taskIdI = task.getTaskId();
+        }
+        System.out.print("Comment: (" + task.getComment() + ") ");
+        String taskCommentI = in.nextLine();
+        if (taskCommentI.isEmpty()) {
+            taskCommentI = task.getTaskId();
+        }
+
+        System.out.print("Start time: (" + task.getStartTime() + ") ");
+        String startTimeI = in.nextLine();
+        int[] startTimeArrayI = new int[2];
+        if (!startTimeI.isEmpty()) {
+            startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+            startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+        } else {
+            startTimeI = task.getStartTimeToString();
+            startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+            startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+        }
+        System.out.print("End time: (" + task.getStartTime() + ") ");
+        String endTimeI = in.nextLine();
+        int[] endTimeArrayI = new int[2];
+        if (!endTimeI.isEmpty()) {
+            endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+            endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+        } else if (!task.getEndTimeToString().isEmpty()) {
+            endTimeI = task.getEndTimeToString();
+            endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+            endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+        }
+
+        Task inputTask;
+        if (!endTimeI.isEmpty()) {
+            inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI, endTimeArrayI);
+        } else {
+            inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI);
+        }
+        
+        timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).deleteTask(taskNumber);
+        timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).addTask(inputTask);
+        
     }
 
     /*

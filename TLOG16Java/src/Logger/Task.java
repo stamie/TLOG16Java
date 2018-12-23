@@ -392,6 +392,21 @@ public class Task implements Util {
 
     }
 
+    public String getStartTimeToString() {
+
+        return this.startTimeString;
+
+    }
+
+    public String getEndTimeToString() {
+        // try {
+        return this.endTimeString;
+        /* } catch (NullPointerException ex) {
+            return null;
+        }*/
+
+    }
+
     public String getComment() {
 
         return this.comment;
