@@ -503,7 +503,7 @@ ask for end time (format: 12:45, with validation)*/
 
         }
 
-        Task task = timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).getTasks().get(taskNumber);
+        Task task = timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).getTasks().get(--taskNumber);
 
         Scanner in = new Scanner(System.in);
         System.out.print("Task Id: (" + task.getTaskId() + ") ");
@@ -528,13 +528,13 @@ ask for end time (format: 12:45, with validation)*/
             startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
             startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
         }
-        System.out.print("End time: (" + task.getStartTime() + ") ");
+        System.out.print("End time: (" + task.getEndTime() + ") ");
         String endTimeI = in.nextLine();
         int[] endTimeArrayI = new int[2];
         if (!endTimeI.isEmpty()) {
             endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
             endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
-        } else if (!task.getEndTimeToString().isEmpty()) {
+        } else if (task.getEndTimeToString() != null) {
             endTimeI = task.getEndTimeToString();
             endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
             endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();

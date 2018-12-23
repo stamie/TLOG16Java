@@ -400,6 +400,7 @@ public class Task implements Util {
 
     public String getEndTimeToString() {
         // try {
+        System.out.println(this.endTimeString);
         return this.endTimeString;
         /* } catch (NullPointerException ex) {
             return null;

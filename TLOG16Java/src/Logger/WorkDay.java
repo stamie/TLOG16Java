@@ -203,7 +203,7 @@ public class WorkDay {
             }
 
         }
-        
+
         this.tasks.add(taskI);
         if (taskI.getStartTime() != null && taskI.getEndTime() != null) {
             this.sumPerDay += Duration.between(taskI.getStartTime(), taskI.getEndTime()).toMinutes();
@@ -255,9 +255,8 @@ public class WorkDay {
         if (i == 1) {
             System.out.println("Haven't got Tasks");
         }
-        
+
         return returnTasks;
-        
 
     }
 
@@ -295,7 +294,9 @@ public class WorkDay {
             return;
         }
         Task task = this.tasks.get(index);
-        this.sumPerDay -= Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
+        if (task.getStartTime() != null && task.getEndTime() != null) {
+            this.sumPerDay -= Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
+        }
         this.tasks.remove(index);
 
     }
