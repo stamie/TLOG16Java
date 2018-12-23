@@ -233,22 +233,19 @@ public class WorkDay {
 
     }
 
-    public void listTask(boolean bool) {
+    public List<Task> listTask(boolean bool) {
 
         int i = 1;
+        List<Task> returnTasks = new ArrayList();
 
         for (Task task : this.tasks) {
 
             if (task.getEndTime() != null && bool) {
                 System.out.println(i + "." + task.getStartTime() + " - " + task.getEndTime() + " TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
                 i++;
-            } else {
+            } else if (task.getEndTime() == null) {
                 System.out.println(i + "." + task.getStartTime() + " - null  TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
-                if (!bool && task.getEndTime() != null) {
-                    i--;
-                    this.tasks.remove(i);
-                    
-                }
+                returnTasks.add(task);
                 i++;
 
             }
@@ -258,6 +255,9 @@ public class WorkDay {
         if (i == 1) {
             System.out.println("Haven't got Tasks");
         }
+        
+        return returnTasks;
+        
 
     }
 
