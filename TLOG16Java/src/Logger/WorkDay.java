@@ -33,6 +33,7 @@ public class WorkDay {
     ) {
 
         this.requiredMinPerDay = requiredMinPerDayI;
+        this.sumPerDay = 0;
         if (actualDayI.length != 3) {
             System.out.println("Is array problem");
             return;
@@ -46,6 +47,7 @@ public class WorkDay {
     ) {
 
         this.requiredMinPerDay = requiredMinPerDayI;
+        this.sumPerDay = 0;
         LocalDate now = LocalDate.now();
         this.actualDay = new int[3];
         this.actualDay[0] = now.getYear();
@@ -57,6 +59,7 @@ public class WorkDay {
     public WorkDay(int[] actualDayI
     ) {
         this.requiredMinPerDay = 450;
+        this.sumPerDay = 0;
         if (actualDayI.length != 3) {
             System.out.println("Is array problem");
             return;
@@ -69,6 +72,7 @@ public class WorkDay {
 
     public WorkDay() {
         this.requiredMinPerDay = 450;
+        this.sumPerDay = 0;
         LocalDate now = LocalDate.now();
         this.actualDay = new int[3];
         this.actualDay[0] = now.getYear();
@@ -152,25 +156,21 @@ public class WorkDay {
      */
     public void addTask(Task t) {
 
-        if (t.isMultipleQuarterHour()
-                && !this.isSeparatedTime(t)) {
+        //     if (t.isMultipleQuarterHour()
+        //           && !this.isSeparatedTime(t)) {
+        this.insertTask(t);
 
-            this.insertTask(t);
-
-        }
-
+        // }
     }
 
-    private void insertTask(Task t) {
+    private void insertTask(Task taskI) {
 
         if (this.tasks.isEmpty()) {
             this.tasks = new ArrayList();
-            this.tasks.add(t);
+            this.tasks.add(taskI);
 
-            this.sumPerDay = 0;
-
-            if (t.getStartTime() != null && t.getEndTime() != null) {
-                this.sumPerDay = Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
+            if (taskI.getStartTime() != null && taskI.getEndTime() != null) {
+                this.sumPerDay = Duration.between(taskI.getStartTime(), taskI.getEndTime()).toMinutes();
             }
 
             return;
@@ -178,28 +178,36 @@ public class WorkDay {
         }
 
         boolean first = true;
-        for (Task t1 : this.tasks) {
+        int index = -1;
+        for (Task task : this.tasks) {
+            index++;
+            if (first && Duration.between(taskI.getStartTime(), task.getStartTime()).toMinutes() >= 0) {
 
-            if (first && Duration.between(t.getEndTime(), t1.getStartTime()).toMinutes() >= 0) {
-
-                this.tasks.add(0, t);
-                this.sumPerDay += Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
+                this.tasks.add(0, taskI);
+                if (taskI.getStartTime() != null && taskI.getEndTime() != null) {
+                    this.sumPerDay += Duration.between(taskI.getStartTime(), taskI.getEndTime()).toMinutes();
+                }
                 return;
 
             }
 
             first = false;
-
-            if (Duration.between(t1.getEndTime(), t.getStartTime()).toMinutes() >= 0) {
-
-                this.tasks.add(t);
-                this.sumPerDay += Duration.between(t.getStartTime(), t.getEndTime()).toMinutes();
+            if (Duration.between(taskI.getStartTime(), task.getStartTime()).toMinutes() >= 0) {
+                int i = index;
+                this.tasks.add(i, taskI);
+                if (taskI.getStartTime() != null && taskI.getEndTime() != null) {
+                    this.sumPerDay += Duration.between(taskI.getStartTime(), taskI.getEndTime()).toMinutes();
+                }
                 return;
 
             }
 
         }
-
+        
+        this.tasks.add(taskI);
+        if (taskI.getStartTime() != null && taskI.getEndTime() != null) {
+            this.sumPerDay += Duration.between(taskI.getStartTime(), taskI.getEndTime()).toMinutes();
+        }
         return;
 
     }

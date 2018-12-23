@@ -363,22 +363,14 @@ ask for end time (format: 12:45, with validation)*/
                 taskI = new Task(taskId, comment, startTime);
             }
 
-            if (day.getTasks().isEmpty()) {
-                
-                timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).addTask(taskI);
-                /*List<Task> tasks = new ArrayList();
+            timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).addTask(taskI);
+            /*List<Task> tasks = new ArrayList();
                 tasks.add(taskI);
                 day.setTasks(tasks);
-                */
-
-            } else {
-
-                day.getTasks().add(day.getTasks().size(), taskI);
-            }
+             */
 
             // workMonth.getDays().set(dayNumber, day);
-            timeLogger.updateMonth(timeLogger.getMonths().get(monthNumber));
-
+//            timeLogger.updateMonth(timeLogger.getMonths().get(monthNumber));
         } catch (DateTimeParseException ex) {
             System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
             return;
@@ -500,7 +492,6 @@ ask for end time (format: 12:45, with validation)*/
         }
         //Task task = timeLogger.getMonths().get(mdIndex[0])
         //TODO: 
-        
 
     }
 
