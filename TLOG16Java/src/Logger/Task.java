@@ -81,8 +81,8 @@ public class Task implements Util {
             return;
 
         }
-        this.startTimeString = startTimeI[0] + ":" + startTimeI[1];
-        this.endTimeString = endTimeI[0] + ":" + endTimeI[1];
+        this.startTimeString = this.arrayTimeToString(startTimeI);
+        this.endTimeString = this.arrayTimeToString(endTimeI);
         this.comment = commentI;
 
         try {
@@ -120,6 +120,39 @@ public class Task implements Util {
     }
 
     public Task(String taskIdI,
+            String commentI,
+            int[] startTimeI) {
+
+        this.taskId = taskIdI;
+
+        if (startTimeI.length != 2) {
+
+            System.out.println("Input is wrong");
+            return;
+
+        }
+        this.startTimeString = this.arrayTimeToString(startTimeI);
+        this.comment = commentI;
+
+        try {
+
+            LocalTime l = LocalTime.parse(this.startTimeString);
+            int hour = l.getHour();
+            int minute = l.getMinute();
+
+            this.startTimeArray = new int[2];
+            this.startTimeArray[0] = hour;
+            this.startTimeArray[1] = minute;
+
+        } catch (DateTimeParseException ex) {
+
+            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+
+        }
+
+    }
+
+    public Task(String taskIdI,
             int[] startTimeI,
             int[] endTimeI) {
 
@@ -131,8 +164,8 @@ public class Task implements Util {
             return;
 
         }
-        this.startTimeString = startTimeI[0] + ":" + startTimeI[1];
-        this.endTimeString = endTimeI[0] + ":" + endTimeI[1];
+        this.startTimeString = this.arrayTimeToString(startTimeI);
+        this.endTimeString = this.arrayTimeToString(endTimeI);
         this.comment = this.startTimeString;
 
         try {
@@ -160,6 +193,39 @@ public class Task implements Util {
             this.endTimeArray = new int[2];
             this.endTimeArray[0] = hour;
             this.endTimeArray[1] = minute;
+
+        } catch (DateTimeParseException ex) {
+
+            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+
+        }
+
+    }
+
+    public Task(String taskIdI,
+            int[] startTimeI) {
+
+        this.taskId = taskIdI;
+
+        if (startTimeI.length != 2) {
+
+            System.out.println("Input is wrong");
+            return;
+
+        }
+
+        this.startTimeString = this.arrayTimeToString(startTimeI);
+        this.comment = this.startTimeString;
+
+        try {
+
+            LocalTime l = LocalTime.parse(this.startTimeString);
+            int hour = l.getHour();
+            int minute = l.getMinute();
+
+            this.startTimeArray = new int[2];
+            this.startTimeArray[0] = hour;
+            this.startTimeArray[1] = minute;
 
         } catch (DateTimeParseException ex) {
 
@@ -215,6 +281,24 @@ public class Task implements Util {
             this.TaskNotEndTimeString(taskIdI, UnknowData1, UnknowData2);
         }
 
+    }
+
+    private String arrayTimeToString(int[] timeI) {
+
+        String timeString;
+        if (timeI[0] > 9) {
+            timeString = timeI[0] + ":";
+        } else {
+            timeString = "0" + timeI[0] + ":";
+        }
+
+        if (timeI[1] > 9) {
+            timeString += timeI[1];
+        } else {
+            timeString += "0" + timeI[1];
+        }
+
+        return timeString;
     }
 
     private void TaskNotEndTimeString(String taskIdI,

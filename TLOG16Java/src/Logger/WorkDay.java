@@ -245,8 +245,9 @@ public class WorkDay {
             } else {
                 System.out.println(i + "." + task.getStartTime() + " - null  TaskId: " + task.getTaskId() + " Comment: " + task.getComment());
                 if (!bool && task.getEndTime() != null) {
-                    this.tasks.remove(i);
                     i--;
+                    this.tasks.remove(i);
+                    
                 }
                 i++;
 

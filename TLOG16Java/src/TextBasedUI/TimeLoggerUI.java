@@ -350,17 +350,21 @@ ask for end time (format: 12:45, with validation)*/
             String comment = in.nextLine();
             System.out.print("StartTime: ");
             String startTime = in.nextLine();
+            int[] startTimeArray = new int[2];
             if (!startTime.isEmpty()) {
-                LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm"));
+                startTimeArray[0] = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+                startTimeArray[1] = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
             } else {
                 startTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+                startTimeArray[0] = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+                startTimeArray[1] = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
             }
 
             Task taskI;
             if (comment.isEmpty()) {
-                taskI = new Task(taskId, startTime);
+                taskI = new Task(taskId, startTimeArray);
             } else {
-                taskI = new Task(taskId, comment, startTime);
+                taskI = new Task(taskId, comment, startTimeArray);
             }
 
             timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).addTask(taskI);
