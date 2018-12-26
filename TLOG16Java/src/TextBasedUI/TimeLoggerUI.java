@@ -546,10 +546,10 @@ ask for end time (format: 12:45, with validation)*/
         } else {
             inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI);
         }
-        
+
         timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).deleteTask(taskNumber);
         timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).addTask(inputTask);
-        
+
     }
 
     /*
@@ -557,6 +557,57 @@ ask for end time (format: 12:45, with validation)*/
     and the statistics of the days of this month
      */
     public void statistics(TimeLogger timeLogger) {
+
+        this.listMonths(timeLogger);
+
+        if (timeLogger.getMonths().isEmpty()) {
+            return;
+        }
+
+        int monthNumber;
+
+        while (1 == 1) {
+            System.out.print("Month Number: ");
+            Scanner in = new Scanner(System.in);
+            monthNumber = in.nextInt();
+
+            if (monthNumber > 0 && monthNumber <= timeLogger.getMonths().size()) {
+                break;
+            }
+
+            System.out.println("Wrong Month Number!");
+
+        }
+
+        System.out.println("Required Mintum / Month: " + timeLogger.getMonths().get(monthNumber).getRequiredMinPerMonth());
+        System.out.println("Summa worked Mintum this Month: " + timeLogger.getMonths().get(monthNumber).getSumPerMonth());
+        System.out.println("Extra Mintum this Month: " + timeLogger.getMonths().get(monthNumber).getExtraMinPerMonth());
+
+        
+
+        if (timeLogger.getMonths().get(monthNumber).listDays()) {
+            
+            int dayNumber;
+
+            while (1 == 1) {
+                System.out.print("Day Number: ");
+                Scanner in = new Scanner(System.in);
+                dayNumber = in.nextInt();
+
+                if (dayNumber > 0 && dayNumber <= timeLogger.getMonths().get(monthNumber).getDays().size()) {
+                    break;
+                }
+
+                System.out.println("Wrong Day Number!");
+
+            }
+            
+            System.out.println("Required Mintum / Day" + timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).getRequiredMinPerDay());
+            System.out.println("Summa Mintum / Day" + timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).getSumPerDay());
+            System.out.println("Extra Mintum / Day" + timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).getExtraMinPerDay());
+            
+
+        }
 
     }
 

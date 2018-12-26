@@ -34,6 +34,8 @@ public class WorkMonth {
 
         this.date = LocalDate.parse(year + "-" + month + "-1", DateTimeFormatter.ofPattern("yyyy-M-d"));
         this.days = new ArrayList();
+        this.requiredMinPerMonth = 0;
+        this.sumPerMonth = 0;
 
     }
 
@@ -122,6 +124,8 @@ public class WorkMonth {
             if (this.days.isEmpty()) {
 
                 this.days.add(wd);
+                this.requiredMinPerMonth += wd.getRequiredMinPerDay();
+                this.sumPerMonth += wd.getSumPerDay();
                 return;
 
             }
@@ -129,6 +133,8 @@ public class WorkMonth {
                 if (workDay.getActualDay().getDayOfYear() > wd.getActualDay().getDayOfYear()) {
 
                     this.days.add(i, wd);
+                    this.requiredMinPerMonth += wd.getRequiredMinPerDay();
+                    this.sumPerMonth += wd.getSumPerDay();
                     return;
                 }
             }
@@ -170,7 +176,12 @@ public class WorkMonth {
                 i++;
                 if (workDay.getActualDayToString() == workDayI.getActualDayToString()) {
                     this.days.remove(i);
+                    this.requiredMinPerMonth -= this.days.get(i).getRequiredMinPerDay();
+                    this.sumPerMonth -= this.days.get(i).getSumPerDay();
+
                     this.days.add(i, workDayI);
+                    this.requiredMinPerMonth += workDay.getRequiredMinPerDay();
+                    this.sumPerMonth += workDay.getSumPerDay();
                     return;
                 }
             }
