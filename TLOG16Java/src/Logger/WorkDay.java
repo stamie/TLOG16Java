@@ -301,9 +301,14 @@ public class WorkDay {
 
     }
 
-    /*public void setTasks(List<Task> tasksI) {
-        this.tasks = tasksI;
+    public void refreshStatistics() {
 
-    }*
-     */
+        this.sumPerDay = 0;
+
+        for (Task task : this.tasks) {
+            if (!task.getEndTimeToString().isEmpty())
+            this.sumPerDay += Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
+            
+        }
+    }
 }

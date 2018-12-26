@@ -188,4 +188,18 @@ public class WorkMonth {
         }
     }
 
+    public void refreshStatistics() {
+
+        this.requiredMinPerMonth = 0;
+        this.sumPerMonth = 0;
+
+        for (WorkDay day : this.days) {
+
+            this.requiredMinPerMonth += day.getRequiredMinPerDay();
+            this.sumPerMonth += day.getSumPerDay();
+
+        }
+
+    }
+
 }

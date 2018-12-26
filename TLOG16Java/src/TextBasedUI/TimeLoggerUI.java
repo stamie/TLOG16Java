@@ -372,13 +372,7 @@ ask for end time (format: 12:45, with validation)*/
             }
 
             timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).addTask(taskI);
-            /*List<Task> tasks = new ArrayList();
-                tasks.add(taskI);
-                day.setTasks(tasks);
-             */
 
-            // workMonth.getDays().set(dayNumber, day);
-//            timeLogger.updateMonth(timeLogger.getMonths().get(monthNumber));
         } catch (DateTimeParseException ex) {
             System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
             return;
@@ -444,7 +438,9 @@ ask for end time (format: 12:45, with validation)*/
                 time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
             }
 
-            timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).getTasks().get(taskN).endTaskWithString(time); //timeLogger.updateMonth(workMonth);
+            timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).getTasks().get(taskN).endTaskWithString(time);
+            timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).refreshStatistics();
+            timeLogger.getMonths().get(monthNumber).refreshStatistics();
 
         } catch (DateTimeParseException ex) {
             System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
@@ -476,6 +472,8 @@ ask for end time (format: 12:45, with validation)*/
         taskNumber--;
 
         timeLogger.getMonths().get(monthAndDayIndex[0]).getDays().get(monthAndDayIndex[1]).deleteTask(taskNumber);
+        timeLogger.getMonths().get(monthAndDayIndex[0]).getDays().get(monthAndDayIndex[1]).refreshStatistics();
+        timeLogger.getMonths().get(monthAndDayIndex[0]).refreshStatistics();
 
     }
 
@@ -549,6 +547,8 @@ ask for end time (format: 12:45, with validation)*/
 
         timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).deleteTask(taskNumber);
         timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).addTask(inputTask);
+        timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).refreshStatistics();
+        timeLogger.getMonths().get(mdIndex[0]).refreshStatistics();
 
     }
 
@@ -574,7 +574,7 @@ ask for end time (format: 12:45, with validation)*/
             if (monthNumber > 0 && monthNumber <= timeLogger.getMonths().size()) {
                 break;
             }
-            
+
             System.out.println("Wrong Month Number!");
 
         }
