@@ -18,6 +18,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import timelogger.exceptions.TaskException;
 
 /**
  *
@@ -53,7 +54,7 @@ public class TimeLoggerUI {
 
     private LocalDate thisDate;
 
-    public boolean TimeLoggerUICreat(int input, TimeLogger timeLogger) {
+    public boolean TimeLoggerUICreat(int input, TimeLogger timeLogger) throws TaskException {
 
         switch (input) {
 
@@ -372,7 +373,8 @@ ask for end time (format: 12:45, with validation)*/
             }
 
             timeLogger.getMonths().get(monthNumber).getDays().get(dayNumber).addTask(taskI);
-
+        } catch (TaskException ex) {
+            ex.getMessage();
         } catch (DateTimeParseException ex) {
             System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString() + " " + ex.getMessage());
             return;
@@ -380,7 +382,7 @@ ask for end time (format: 12:45, with validation)*/
 
     }
 
-    public void finishASpecificTask(TimeLogger timeLogger) {
+    public void finishASpecificTask(TimeLogger timeLogger) throws TaskException {
 
         try {
 
@@ -481,74 +483,78 @@ ask for end time (format: 12:45, with validation)*/
     Modify task: ask for month, day, task, let change every fields 
     (shows previous value in braces, if the input is empty, don't change the value!)
      */
-    public void modifyTask(TimeLogger timeLogger) {
+    public void modifyTask(TimeLogger timeLogger) throws TaskException {
 
-        int[] mdIndex = this.listTasks(timeLogger);
-        if (mdIndex == null) {
-            System.out.println("Don't have a task!");
-            return;
-        }
-
-        int taskNumber = 0;
-        //The task number input,
-        while (1 == 1) {
-            System.out.print("Task number: ");
-            Scanner in = new Scanner(System.in);
-            taskNumber = in.nextInt();
-            if (taskNumber > 0 && taskNumber <= timeLogger.getMonths().get(mdIndex[0]).getDays().size()) {
-                break;
+        try {
+            int[] mdIndex = this.listTasks(timeLogger);
+            if (mdIndex == null) {
+                System.out.println("Don't have a task!");
+                return;
             }
 
-        }
+            int taskNumber = 0;
+            //The task number input,
+            while (1 == 1) {
+                System.out.print("Task number: ");
+                Scanner in = new Scanner(System.in);
+                taskNumber = in.nextInt();
+                if (taskNumber > 0 && taskNumber <= timeLogger.getMonths().get(mdIndex[0]).getDays().size()) {
+                    break;
+                }
 
-        Task task = timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).getTasks().get(--taskNumber);
+            }
 
-        Scanner in = new Scanner(System.in);
-        System.out.print("Task Id: (" + task.getTaskId() + ") ");
-        String taskIdI = in.nextLine();
-        if (taskIdI.isEmpty()) {
-            taskIdI = task.getTaskId();
-        }
-        System.out.print("Comment: (" + task.getComment() + ") ");
-        String taskCommentI = in.nextLine();
-        if (taskCommentI.isEmpty()) {
-            taskCommentI = task.getTaskId();
-        }
+            Task task = timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).getTasks().get(--taskNumber);
 
-        System.out.print("Start time: (" + task.getStartTime() + ") ");
-        String startTimeI = in.nextLine();
-        int[] startTimeArrayI = new int[2];
-        if (!startTimeI.isEmpty()) {
-            startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
-            startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
-        } else {
-            startTimeI = task.getStartTimeToString();
-            startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
-            startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
-        }
-        System.out.print("End time: (" + task.getEndTime() + ") ");
-        String endTimeI = in.nextLine();
-        int[] endTimeArrayI = new int[2];
-        if (!endTimeI.isEmpty()) {
-            endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
-            endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
-        } else if (task.getEndTimeToString() != null) {
-            endTimeI = task.getEndTimeToString();
-            endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
-            endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
-        }
+            Scanner in = new Scanner(System.in);
+            System.out.print("Task Id: (" + task.getTaskId() + ") ");
+            String taskIdI = in.nextLine();
+            if (taskIdI.isEmpty()) {
+                taskIdI = task.getTaskId();
+            }
+            System.out.print("Comment: (" + task.getComment() + ") ");
+            String taskCommentI = in.nextLine();
+            if (taskCommentI.isEmpty()) {
+                taskCommentI = task.getTaskId();
+            }
 
-        Task inputTask;
-        if (!endTimeI.isEmpty()) {
-            inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI, endTimeArrayI);
-        } else {
-            inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI);
-        }
+            System.out.print("Start time: (" + task.getStartTime() + ") ");
+            String startTimeI = in.nextLine();
+            int[] startTimeArrayI = new int[2];
+            if (!startTimeI.isEmpty()) {
+                startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+                startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+            } else {
+                startTimeI = task.getStartTimeToString();
+                startTimeArrayI[0] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+                startTimeArrayI[1] = LocalTime.parse(startTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+            }
+            System.out.print("End time: (" + task.getEndTime() + ") ");
+            String endTimeI = in.nextLine();
+            int[] endTimeArrayI = new int[2];
+            if (!endTimeI.isEmpty()) {
+                endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+                endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+            } else if (task.getEndTimeToString() != null) {
+                endTimeI = task.getEndTimeToString();
+                endTimeArrayI[0] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getHour();
+                endTimeArrayI[1] = LocalTime.parse(endTimeI, DateTimeFormatter.ofPattern("HH:mm")).getMinute();
+            }
 
-        timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).deleteTask(taskNumber);
-        timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).addTask(inputTask);
-        timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).refreshStatistics();
-        timeLogger.getMonths().get(mdIndex[0]).refreshStatistics();
+            Task inputTask;
+            if (!endTimeI.isEmpty()) {
+                inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI, endTimeArrayI);
+            } else {
+                inputTask = new Task(taskIdI, taskCommentI, startTimeArrayI);
+            }
+
+            timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).deleteTask(taskNumber);
+            timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).addTask(inputTask);
+            timeLogger.getMonths().get(mdIndex[0]).getDays().get(mdIndex[1]).refreshStatistics();
+            timeLogger.getMonths().get(mdIndex[0]).refreshStatistics();
+        } catch (TaskException ex) {
+            System.out.println(ex.getMessage());
+        }
 
     }
 

@@ -8,6 +8,7 @@ package Logger;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import timelogger.exceptions.TaskException;
 
 /**
  *
@@ -23,11 +24,10 @@ public class Task implements Util {
     private int[] startTimeArray;
     private int[] endTimeArray;
 
-    @SuppressWarnings("empty-statement")
     public Task(String taskIdI,
             String commentI,
             String startTimeI,
-            String endTimeI) {
+            String endTimeI) throws TaskException {
 
         this.taskId = taskIdI;
         this.startTimeString = startTimeI;
@@ -71,172 +71,172 @@ public class Task implements Util {
     public Task(String taskIdI,
             String commentI,
             int[] startTimeI,
-            int[] endTimeI) {
+            int[] endTimeI) throws TaskException {
 
         this.taskId = taskIdI;
 
         if (startTimeI.length != 2 && endTimeI.length != 2) {
 
-            System.out.println("Input is wrong");
-            return;
+            throw new TaskException("Input is wrong! StartTime or EndTime not 2 length!");
 
-        }
-        this.startTimeString = this.arrayTimeToString(startTimeI);
-        this.endTimeString = this.arrayTimeToString(endTimeI);
-        this.comment = commentI;
+        } else {
+            this.startTimeString = this.arrayTimeToString(startTimeI);
+            this.endTimeString = this.arrayTimeToString(endTimeI);
+            this.comment = commentI;
 
-        try {
+            try {
 
-            LocalTime l = LocalTime.parse(this.startTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
+                LocalTime l = LocalTime.parse(this.startTimeString);
+                int hour = l.getHour();
+                int minute = l.getMinute();
 
-            this.startTimeArray = new int[2];
-            this.startTimeArray[0] = hour;
-            this.startTimeArray[1] = minute;
+                this.startTimeArray = new int[2];
+                this.startTimeArray[0] = hour;
+                this.startTimeArray[1] = minute;
 
-        } catch (DateTimeParseException ex) {
+            } catch (DateTimeParseException ex) {
 
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+                System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
 
-        }
+            }
 
-        try {
+            try {
 
-            LocalTime l = LocalTime.parse(this.endTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
+                LocalTime l = LocalTime.parse(this.endTimeString);
+                int hour = l.getHour();
+                int minute = l.getMinute();
 
-            this.endTimeArray = new int[2];
-            this.endTimeArray[0] = hour;
-            this.endTimeArray[1] = minute;
+                this.endTimeArray = new int[2];
+                this.endTimeArray[0] = hour;
+                this.endTimeArray[1] = minute;
 
-        } catch (DateTimeParseException ex) {
+            } catch (DateTimeParseException ex) {
 
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+                System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
 
+            }
         }
 
     }
 
     public Task(String taskIdI,
             String commentI,
-            int[] startTimeI) {
+            int[] startTimeI) throws TaskException {
 
         this.taskId = taskIdI;
 
         if (startTimeI.length != 2) {
 
-            System.out.println("Input is wrong");
-            return;
+            throw new TaskException("Input is wrong! The startTime length is not 2! It's: " + startTimeI.length);
 
+        } else {
+            this.startTimeString = this.arrayTimeToString(startTimeI);
+            this.comment = commentI;
+
+            try {
+
+                LocalTime l = LocalTime.parse(this.startTimeString);
+                int hour = l.getHour();
+                int minute = l.getMinute();
+
+                this.startTimeArray = new int[2];
+                this.startTimeArray[0] = hour;
+                this.startTimeArray[1] = minute;
+
+            } catch (DateTimeParseException ex) {
+
+                System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+
+            }
         }
-        this.startTimeString = this.arrayTimeToString(startTimeI);
-        this.comment = commentI;
-
-        try {
-
-            LocalTime l = LocalTime.parse(this.startTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.startTimeArray = new int[2];
-            this.startTimeArray[0] = hour;
-            this.startTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
     }
 
     public Task(String taskIdI,
             int[] startTimeI,
-            int[] endTimeI) {
+            int[] endTimeI) throws TaskException {
 
         this.taskId = taskIdI;
 
         if (startTimeI.length != 2 && endTimeI.length != 2) {
 
-            System.out.println("Input is wrong");
-            return;
+            throw new TaskException("Input is wrong! StartTime or EndTime not 2 length!");
+
+        } else {
+            this.startTimeString = this.arrayTimeToString(startTimeI);
+            this.endTimeString = this.arrayTimeToString(endTimeI);
+            this.comment = this.startTimeString;
+
+            try {
+
+                LocalTime l = LocalTime.parse(this.startTimeString);
+                int hour = l.getHour();
+                int minute = l.getMinute();
+
+                this.startTimeArray = new int[2];
+                this.startTimeArray[0] = hour;
+                this.startTimeArray[1] = minute;
+
+            } catch (DateTimeParseException ex) {
+
+                System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+
+            }
+
+            try {
+
+                LocalTime l = LocalTime.parse(this.endTimeString);
+                int hour = l.getHour();
+                int minute = l.getMinute();
+
+                this.endTimeArray = new int[2];
+                this.endTimeArray[0] = hour;
+                this.endTimeArray[1] = minute;
+
+            } catch (DateTimeParseException ex) {
+
+                System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+
+            }
 
         }
-        this.startTimeString = this.arrayTimeToString(startTimeI);
-        this.endTimeString = this.arrayTimeToString(endTimeI);
-        this.comment = this.startTimeString;
-
-        try {
-
-            LocalTime l = LocalTime.parse(this.startTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.startTimeArray = new int[2];
-            this.startTimeArray[0] = hour;
-            this.startTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
-        try {
-
-            LocalTime l = LocalTime.parse(this.endTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.endTimeArray = new int[2];
-            this.endTimeArray[0] = hour;
-            this.endTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
     }
 
     public Task(String taskIdI,
-            int[] startTimeI) {
+            int[] startTimeI)
+            throws TaskException {
 
         this.taskId = taskIdI;
 
         if (startTimeI.length != 2) {
 
-            System.out.println("Input is wrong");
-            return;
+            throw new TaskException("Input is wrong! The startTime length is not 2! It's: " + startTimeI.length);
+
+        } else {
+
+            this.startTimeString = this.arrayTimeToString(startTimeI);
+            this.comment = this.startTimeString;
+
+            try {
+
+                LocalTime l = LocalTime.parse(this.startTimeString);
+                int hour = l.getHour();
+                int minute = l.getMinute();
+
+                this.startTimeArray = new int[2];
+                this.startTimeArray[0] = hour;
+                this.startTimeArray[1] = minute;
+
+            } catch (DateTimeParseException ex) {
+
+                System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+
+            }
 
         }
-
-        this.startTimeString = this.arrayTimeToString(startTimeI);
-        this.comment = this.startTimeString;
-
-        try {
-
-            LocalTime l = LocalTime.parse(this.startTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.startTimeArray = new int[2];
-            this.startTimeArray[0] = hour;
-            this.startTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
     }
 
     public Task(String taskIdI,
-            String startTimeI) {
+            String startTimeI) throws TaskException {
 
         this.taskId = taskIdI;
         this.startTimeString = startTimeI;
@@ -261,6 +261,7 @@ public class Task implements Util {
 
     }
 
+    /*
     public Task(String taskIdI,
             String UnknowData1,
             String UnknowData2) {
@@ -281,8 +282,7 @@ public class Task implements Util {
             this.TaskNotEndTimeString(taskIdI, UnknowData1, UnknowData2);
         }
 
-    }
-
+    } */
     private String arrayTimeToString(int[] timeI) {
 
         String timeString;
@@ -371,19 +371,19 @@ public class Task implements Util {
 
     }
 
-    public String getTaskId() {
+    public String getTaskId() throws TaskException {
 
         return this.taskId;
 
     }
 
-    public LocalTime getStartTime() {
+    public LocalTime getStartTime() throws TaskException {
 
         return LocalTime.parse(this.startTimeString);
 
     }
 
-    public LocalTime getEndTime() {
+    public LocalTime getEndTime() throws TaskException {
         try {
             return LocalTime.parse(this.endTimeString);
         } catch (NullPointerException ex) {
@@ -400,7 +400,7 @@ public class Task implements Util {
 
     public String getEndTimeToString() {
         // try {
-        System.out.println(this.endTimeString);
+        //System.out.println(this.endTimeString);
         return this.endTimeString;
         /* } catch (NullPointerException ex) {
             return null;
@@ -457,7 +457,7 @@ public class Task implements Util {
 
     }
 
-    public void endTaskWithString(String endTimeStringI) {
+    public void endTaskWithString(String endTimeStringI) throws TaskException {
 
         try {
             this.endTimeString = endTimeStringI;
@@ -466,12 +466,12 @@ public class Task implements Util {
             this.endTimeArray[1] = LocalTime.parse(this.endTimeString).getMinute();
 
         } catch (DateTimeParseException ex) {
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
+            new TaskException(ex.getErrorIndex() + ": " + ex.getParsedString());
         }
 
     }
 
-    public void endTaskWithArray(int[] endTimeArrayI) {
+    public void endTaskWithArray(int[] endTimeArrayI) throws TaskException {
 
         if (endTimeArrayI.length != 2) {
             System.out.println("Wrong Input!");
