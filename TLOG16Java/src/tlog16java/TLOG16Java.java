@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import timelogger.exceptions.OwnException;
 
 /**
  *
@@ -21,7 +22,7 @@ public class TLOG16Java {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, OwnException {
         // TODO code application logic here
 
         List<WorkMonth> months = new ArrayList();

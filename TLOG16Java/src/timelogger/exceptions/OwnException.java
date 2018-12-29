@@ -12,9 +12,9 @@ import Logger.Task;
  *
  * @author stampel
  */
-public class TaskException extends java.lang.Exception {
+public class OwnException extends java.lang.Exception {
 
-    public TaskException(String message) {
+    public OwnException(String message) {
         super(message);
     }
 

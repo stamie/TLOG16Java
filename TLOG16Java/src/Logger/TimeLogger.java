@@ -8,6 +8,7 @@ package Logger;
 import java.util.List;
 import Logger.WorkMonth;
 import java.util.ArrayList;
+import timelogger.exceptions.OwnException;
 
 /**
  *
@@ -104,9 +105,9 @@ public class TimeLogger {
     }
 
     public void updateMonth(WorkMonth wm) {
-     
+
         if (!this.isNewMonth(wm)) {
-        
+
             int i = -1;
 
             for (WorkMonth month : this.months) {
@@ -118,6 +119,14 @@ public class TimeLogger {
                 }
             }
         }
+    }
+
+    public void deleteTask(int monthIndex, int dayIndex, int taskIndex) throws OwnException {
+
+        this.months.get(monthIndex).getDays().get(dayIndex).deleteTask(taskIndex);
+        this.months.get(monthIndex).getDays().get(dayIndex).refreshStatistics();
+        this.months.get(monthIndex).refreshStatistics();
+
     }
 
 }

@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
+import timelogger.exceptions.OwnException;
 
 /**
  *
@@ -129,7 +130,7 @@ public class WorkDay {
  *         boolean method should be able to decide if the t Task has a common time interval with any 
  *         existing Task's time interval in the tasks list
      */
-    public boolean isSeparatedTime(Task t) {
+    public boolean isSeparatedTime(Task t) throws OwnException {
 
         for (Task t1 : this.tasks) {
             if (t1.getStartTime() == t.getStartTime() || t.getEndTime() == t1.getEndTime()) {
@@ -154,7 +155,7 @@ public class WorkDay {
  *         void add a task to the list of tasks, if length is multiple of the quarter hour and the task
  *         time intervals have no common parts, the else part will be implemented later
      */
-    public void addTask(Task t) {
+    public void addTask(Task t) throws OwnException {
 
         //     if (t.isMultipleQuarterHour()
         //           && !this.isSeparatedTime(t)) {
@@ -163,7 +164,7 @@ public class WorkDay {
         // }
     }
 
-    private void insertTask(Task taskI) {
+    private void insertTask(Task taskI) throws OwnException {
 
         if (this.tasks.isEmpty()) {
             this.tasks = new ArrayList();
@@ -233,7 +234,7 @@ public class WorkDay {
 
     }
 
-    public List<Task> listTask(boolean bool) {
+    public List<Task> listTask(boolean bool) throws OwnException {
 
         int i = 1;
         List<Task> returnTasks = new ArrayList();
@@ -265,7 +266,7 @@ public class WorkDay {
         return true;
     }
 
-    public void updateTask(Task TaskI) {
+    public void updateTask(Task TaskI) throws OwnException {
 
         if (!this.isNewTask(TaskI)) {
 
@@ -284,7 +285,7 @@ public class WorkDay {
         }
     }
 
-    public void deleteTask(int index) {
+    public void deleteTask(int index) throws OwnException {
 
         if (this.tasks.isEmpty()) {
             return;
@@ -301,7 +302,7 @@ public class WorkDay {
 
     }
 
-    public void refreshStatistics() {
+    public void refreshStatistics() throws OwnException {
 
         this.sumPerDay = 0;
 
