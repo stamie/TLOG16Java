@@ -26,43 +26,47 @@ public class Task implements Util {
 
     public Task(String taskIdI,
             String commentI,
-            String startTimeI,
-            String endTimeI) throws OwnException {
-
-        this.taskId = taskIdI;
-        this.startTimeString = startTimeI;
-        this.endTimeString = endTimeI;
-        this.comment = commentI;
-
+            String startTimeStringI,
+            String endTimeStringI) throws OwnException {
         try {
+            if (startTimeStringI.isEmpty()) {
+                throw new OwnException("The startTime is Empty!");
+            } else if (endTimeStringI.isEmpty()) {
+                throw new OwnException("The endTime is Empty!");
+            } else {
 
-            LocalTime l = LocalTime.parse(this.startTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
+                LocalTime l = LocalTime.parse(this.startTimeString);
+                LocalTime l2 = LocalTime.parse(this.endTimeString);
+                if (l.isAfter(l2)) {
+                    throw new OwnException("The startTime is not Before for endTime!");
+                } else {
+                    this.taskId = taskIdI;
+                    if (!this.isValidTaskId() || !this.isValidLTTaskId() || !this.isValidRedmineTaskId()) {
+                        throw new OwnException("Invalid taskID!");
 
-            this.startTimeArray = new int[2];
-            this.startTimeArray[0] = hour;
-            this.startTimeArray[1] = minute;
+                    } else {
+                        this.startTimeString = startTimeStringI;
+                        this.endTimeString = endTimeStringI;
+                        if (!this.isMultipleQuarterHour()) {
+                            throw new OwnException("The duration is not multi quater hour!");
+                        } else {
 
+                            this.comment = commentI;
+
+                            this.startTimeArray = new int[2];
+                            this.startTimeArray[0] = l.getHour();
+                            this.startTimeArray[1] = l.getMinute();
+
+                            this.endTimeArray = new int[2];
+                            this.endTimeArray[0] = l2.getHour();
+                            this.endTimeArray[1] = l2.getMinute();
+                        }
+                    }
+                }
+            }
         } catch (DateTimeParseException ex) {
 
             throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
-
-        }
-
-        try {
-
-            LocalTime l = LocalTime.parse(this.endTimeString);
-            int hour = l.getHour();
-            int minute = l.getMinute();
-
-            this.endTimeArray = new int[2];
-            this.endTimeArray[0] = hour;
-            this.endTimeArray[1] = minute;
-
-        } catch (DateTimeParseException ex) {
-
-            System.out.println(ex.getErrorIndex() + ": " + ex.getParsedString());
 
         }
 
@@ -79,44 +83,43 @@ public class Task implements Util {
 
             throw new OwnException("Input is wrong! StartTime or EndTime not 2 length!");
 
+        } else if (!this.isValidTaskId() || !this.isValidLTTaskId() || !this.isValidRedmineTaskId()) {
+            throw new OwnException("Invalid taskID!");
+
         } else {
             this.startTimeString = this.arrayTimeToString(startTimeArrayI);
             this.endTimeString = this.arrayTimeToString(endTimeArrayI);
-            this.comment = commentI;
+            if (!this.isMultipleQuarterHour()) {
+                throw new OwnException("The duration is not multi quater hour!");
+            } else {
 
-            try {
+                this.comment = commentI;
 
-                LocalTime l = LocalTime.parse(this.startTimeString);
-                int hour = l.getHour();
-                int minute = l.getMinute();
+                try {
 
-                this.startTimeArray = new int[2];
-                this.startTimeArray[0] = hour;
-                this.startTimeArray[1] = minute;
+                    LocalTime l = LocalTime.parse(this.startTimeString);
+                    int hour = l.getHour();
+                    int minute = l.getMinute();
 
-            } catch (DateTimeParseException ex) {
+                    this.startTimeArray = new int[2];
+                    this.startTimeArray[0] = hour;
+                    this.startTimeArray[1] = minute;
 
-                throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
+                    l = LocalTime.parse(this.endTimeString);
+                    hour = l.getHour();
+                    minute = l.getMinute();
 
-            }
+                    this.endTimeArray = new int[2];
+                    this.endTimeArray[0] = hour;
+                    this.endTimeArray[1] = minute;
 
-            try {
+                } catch (DateTimeParseException ex) {
 
-                LocalTime l = LocalTime.parse(this.endTimeString);
-                int hour = l.getHour();
-                int minute = l.getMinute();
+                    throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
 
-                this.endTimeArray = new int[2];
-                this.endTimeArray[0] = hour;
-                this.endTimeArray[1] = minute;
-
-            } catch (DateTimeParseException ex) {
-
-                throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
-
+                }
             }
         }
-
     }
 
     public Task(String taskIdI,
@@ -129,11 +132,13 @@ public class Task implements Util {
 
             throw new OwnException("Input is wrong! The startTime length is not 2! It's: " + startTimeArrayI.length);
 
-        } else {
-            this.startTimeString = this.arrayTimeToString(startTimeArrayI);
-            this.comment = commentI;
+        } else if (!this.isValidTaskId() || !this.isValidLTTaskId() || !this.isValidRedmineTaskId()) {
+            throw new OwnException("Invalid taskID!");
 
+        } else {
             try {
+                this.startTimeString = this.arrayTimeToString(startTimeArrayI);
+                this.comment = commentI;
 
                 LocalTime l = LocalTime.parse(this.startTimeString);
                 int hour = l.getHour();
@@ -155,43 +160,42 @@ public class Task implements Util {
             int[] startTimeArrayI,
             int[] endTimeArrayI) throws OwnException {
 
-        this.taskId = taskIdI;
-
         if (startTimeArrayI.length != 2 && endTimeArrayI.length != 2) {
 
             throw new OwnException("Input is wrong! StartTime or EndTime not 2 length!");
 
         } else {
-            this.startTimeString = this.arrayTimeToString(startTimeArrayI);
-            this.endTimeString = this.arrayTimeToString(endTimeArrayI);
-            this.comment = this.startTimeString;
-
             try {
+                this.taskId = taskIdI;
+                if (!this.isValidTaskId() || !this.isValidLTTaskId() || !this.isValidRedmineTaskId()) {
+                    throw new OwnException("Invalid taskID!");
 
-                LocalTime l = LocalTime.parse(this.startTimeString);
-                int hour = l.getHour();
-                int minute = l.getMinute();
+                } else {
+                    this.startTimeString = this.arrayTimeToString(startTimeArrayI);
+                    this.endTimeString = this.arrayTimeToString(endTimeArrayI);
+                    if (!this.isMultipleQuarterHour()) {
+                        throw new OwnException("The duration is not multi quater hour!");
+                    } else {
 
-                this.startTimeArray = new int[2];
-                this.startTimeArray[0] = hour;
-                this.startTimeArray[1] = minute;
+                        this.comment = this.startTimeString;
 
-            } catch (DateTimeParseException ex) {
+                        LocalTime l = LocalTime.parse(this.startTimeString);
+                        int hour = l.getHour();
+                        int minute = l.getMinute();
 
-                throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
+                        this.startTimeArray = new int[2];
+                        this.startTimeArray[0] = hour;
+                        this.startTimeArray[1] = minute;
 
-            }
+                        l = LocalTime.parse(this.endTimeString);
+                        hour = l.getHour();
+                        minute = l.getMinute();
 
-            try {
-
-                LocalTime l = LocalTime.parse(this.endTimeString);
-                int hour = l.getHour();
-                int minute = l.getMinute();
-
-                this.endTimeArray = new int[2];
-                this.endTimeArray[0] = hour;
-                this.endTimeArray[1] = minute;
-
+                        this.endTimeArray = new int[2];
+                        this.endTimeArray[0] = hour;
+                        this.endTimeArray[1] = minute;
+                    }
+                }
             } catch (DateTimeParseException ex) {
 
                 throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
@@ -206,32 +210,33 @@ public class Task implements Util {
             throws OwnException {
 
         this.taskId = taskIdI;
-
-        if (startTimeArrayI.length != 2) {
-
-            throw new OwnException("Input is wrong! The startTime length is not 2! It's: " + startTimeArrayI.length);
+        if (!this.isValidTaskId() || !this.isValidLTTaskId() || !this.isValidRedmineTaskId()) {
+            throw new OwnException("Invalid taskID!");
 
         } else {
+            if (startTimeArrayI.length != 2) {
 
-            this.startTimeString = this.arrayTimeToString(startTimeArrayI);
-            this.comment = this.startTimeString;
+                throw new OwnException("Input is wrong! The startTime length is not 2! It's: " + startTimeArrayI.length);
 
-            try {
+            } else {
+                try {
+                    this.startTimeString = this.arrayTimeToString(startTimeArrayI);
+                    this.comment = this.startTimeString;
 
-                LocalTime l = LocalTime.parse(this.startTimeString);
-                int hour = l.getHour();
-                int minute = l.getMinute();
+                    LocalTime l = LocalTime.parse(this.startTimeString);
+                    int hour = l.getHour();
+                    int minute = l.getMinute();
 
-                this.startTimeArray = new int[2];
-                this.startTimeArray[0] = hour;
-                this.startTimeArray[1] = minute;
+                    this.startTimeArray = new int[2];
+                    this.startTimeArray[0] = hour;
+                    this.startTimeArray[1] = minute;
 
-            } catch (DateTimeParseException ex) {
+                } catch (DateTimeParseException ex) {
 
-                throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
+                    throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
 
+                }
             }
-
         }
     }
 
@@ -242,17 +247,21 @@ public class Task implements Util {
             LocalTime l = LocalTime.parse(startTimeStringI);
 
             this.taskId = taskIdI;
-            this.startTimeString = startTimeStringI;
-            //  this.endTimeString = endTimeI;
-            this.comment = startTimeStringI;
+            if (!this.isValidTaskId() || !this.isValidLTTaskId() || !this.isValidRedmineTaskId()) {
+                throw new OwnException("Invalid taskID!");
 
-            int hour = l.getHour();
-            int minute = l.getMinute();
+            } else {
+                this.startTimeString = startTimeStringI;
+                //  this.endTimeString = endTimeI;
+                this.comment = startTimeStringI;
 
-            this.startTimeArray = new int[2];
-            this.startTimeArray[0] = hour;
-            this.startTimeArray[1] = minute;
+                int hour = l.getHour();
+                int minute = l.getMinute();
 
+                this.startTimeArray = new int[2];
+                this.startTimeArray[0] = hour;
+                this.startTimeArray[1] = minute;
+            }
         } catch (DateTimeParseException ex) {
 
             throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
@@ -261,28 +270,6 @@ public class Task implements Util {
 
     }
 
-    /*
-    public Task(String taskIdI,
-            String UnknowData1,
-            String UnknowData2) {
-
-        try {
-            LocalTime.parse(UnknowData1);
-            try {
-                LocalTime.parse(UnknowData2);
-                this.TaskWithEndTimeStringNotComment(taskIdI, UnknowData1, UnknowData2);
-
-            } catch (DateTimeParseException ex) {
-                System.out.println(ex.getMessage() + " " + ex.getParsedString());
-
-            }
-
-        } catch (DateTimeParseException ex) {
-
-            this.TaskNotEndTimeString(taskIdI, UnknowData1, UnknowData2);
-        }
-
-    } */
     private String arrayTimeToString(int[] timeI) {
 
         String timeString;
@@ -304,13 +291,10 @@ public class Task implements Util {
     private void TaskNotEndTimeString(String taskIdI,
             String commentI,
             String startTimeI) throws OwnException {
-
-        this.taskId = taskIdI;
-        this.startTimeString = startTimeI;
-        //this.endTimeString = endTimeI;
-        this.comment = commentI;
-
         try {
+            this.taskId = taskIdI;
+            this.startTimeString = startTimeI;
+            this.comment = commentI;
 
             LocalTime l = LocalTime.parse(this.startTimeString);
             int hour = l.getHour();
@@ -408,6 +392,12 @@ public class Task implements Util {
 
     }
 
+    public long getMinPerTask() throws OwnException {
+
+        return Duration.between(this.getStartTime(), this.getEndTime()).toMinutes();
+
+    }
+
     public String getComment() {
 
         return this.comment;
@@ -460,13 +450,23 @@ public class Task implements Util {
     public void endTaskWithString(String endTimeStringI) throws OwnException {
 
         try {
-            this.endTimeString = endTimeStringI;
-            this.endTimeArray = new int[2];
-            this.endTimeArray[0] = LocalTime.parse(this.endTimeString).getHour();
-            this.endTimeArray[1] = LocalTime.parse(this.endTimeString).getMinute();
+            if (LocalTime.parse(endTimeStringI).isBefore(this.getStartTime())) {
+                throw new OwnException("The endTime is before the startDate!");
 
+            } else {
+
+                this.endTimeString = endTimeStringI;
+                if (!this.isMultipleQuarterHour()) {
+                    throw new OwnException("The duration is not multi quater hour!");
+                } else {
+
+                    this.endTimeArray = new int[2];
+                    this.endTimeArray[0] = LocalTime.parse(this.endTimeString).getHour();
+                    this.endTimeArray[1] = LocalTime.parse(this.endTimeString).getMinute();
+                }
+            }
         } catch (DateTimeParseException ex) {
-            new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
+            throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
         }
 
     }
@@ -479,11 +479,20 @@ public class Task implements Util {
         } else {
 
             try {
-                this.endTimeString = endTimeArrayI[0] + ":" + endTimeArrayI[1];
-                LocalTime.parse(this.endTimeString);
-                this.endTimeArray = new int[2];
-                this.endTimeArray = endTimeArrayI;
 
+                if (LocalTime.parse(endTimeArrayI[0] + ":" + endTimeArrayI[1]).isBefore(this.getStartTime())) {
+                    throw new OwnException("The endTime is before the startDate!");
+
+                } else {
+                    this.endTimeString = endTimeArrayI[0] + ":" + endTimeArrayI[1];
+                    if (!this.isMultipleQuarterHour()) {
+                        throw new OwnException("The duration is not multi quater hour!");
+                    } else {
+
+                        this.endTimeArray = new int[2];
+                        this.endTimeArray = endTimeArrayI;
+                    }
+                }
             } catch (DateTimeParseException ex) {
                 throw new OwnException(ex.getErrorIndex() + ": " + ex.getParsedString());
             }
