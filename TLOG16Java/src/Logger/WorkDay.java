@@ -8,10 +8,12 @@ package Logger;
 import java.time.*;
 import java.util.List;
 import Logger.Task;
+import Logger.Util;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
+import timelogger.exceptions.OwnException;
 
 /**
  *
@@ -21,7 +23,7 @@ import java.util.Locale;
  * requiredMinPerDay :(defulte 7,5 houers)long actualDay :LocalDate sumPerDay
  * :long
  */
-public class WorkDay {
+public class WorkDay extends Util {
 
     private List<Task> tasks;
     private long requiredMinPerDay;
@@ -30,44 +32,67 @@ public class WorkDay {
 
     public WorkDay(int[] actualDayI,
             long requiredMinPerDayI
-    ) {
+    ) throws OwnException {
 
-        this.requiredMinPerDay = requiredMinPerDayI;
-        this.sumPerDay = 0;
-        if (actualDayI.length != 3) {
-            System.out.println("Is array problem");
-            return;
+        if (requiredMinPerDayI <= 0) {
+            throw new OwnException("NegativeMinutesOfWorkException");
+
+        } else if (actualDayI.length != 3) {
+            throw new OwnException("Is array problem");
+        } else {
+            LocalDate date = LocalDate.of(actualDayI[0], actualDayI[1], actualDayI[2]);
+            if (date.isAfter(LocalDate.now())) {
+                throw new OwnException("FutureWorkException");
+
+            } else {
+                this.requiredMinPerDay = requiredMinPerDayI;
+                this.sumPerDay = 0;
+
+                this.actualDay = new int[3];
+                this.actualDay = actualDayI;
+                this.tasks = new ArrayList();
+            }
         }
-        this.actualDay = new int[3];
-        this.actualDay = actualDayI;
-        this.tasks = new ArrayList();
     }
 
     public WorkDay(long requiredMinPerDayI
-    ) {
+    ) throws OwnException {
+        if (requiredMinPerDayI <= 0) {
+            throw new OwnException("NegativeMinutesOfWorkException");
 
-        this.requiredMinPerDay = requiredMinPerDayI;
-        this.sumPerDay = 0;
-        LocalDate now = LocalDate.now();
-        this.actualDay = new int[3];
-        this.actualDay[0] = now.getYear();
-        this.actualDay[1] = now.getMonthValue();
-        this.actualDay[2] = now.getDayOfMonth();
-        this.tasks = new ArrayList();
+        } else {
+            this.requiredMinPerDay = requiredMinPerDayI;
+            this.sumPerDay = 0;
+            LocalDate now = LocalDate.now();
+            this.actualDay = new int[3];
+            this.actualDay[0] = now.getYear();
+            this.actualDay[1] = now.getMonthValue();
+            this.actualDay[2] = now.getDayOfMonth();
+            this.tasks = new ArrayList();
+        }
     }
 
     public WorkDay(int[] actualDayI
-    ) {
-        this.requiredMinPerDay = 450;
-        this.sumPerDay = 0;
-        if (actualDayI.length != 3) {
-            System.out.println("Is array problem");
-            return;
-        }
-        this.actualDay = new int[3];
-        this.actualDay = actualDayI;
-        this.tasks = new ArrayList();
+    ) throws OwnException {
 
+        if (actualDayI.length != 3) {
+            throw new OwnException("Is array problem");
+        } else {
+            LocalDate date = LocalDate.of(actualDayI[0], actualDayI[1], actualDayI[2]);
+            if (date.isAfter(LocalDate.now())) {
+                throw new OwnException("FutureWorkException");
+
+            } else {
+
+                this.requiredMinPerDay = 450;
+                this.sumPerDay = 0;
+
+                this.actualDay = new int[3];
+                this.actualDay = actualDayI;
+                this.tasks = new ArrayList();
+
+            }
+        }
     }
 
     public WorkDay() {
@@ -96,8 +121,39 @@ public class WorkDay {
 
     }
 
+    public LocalTime endTimeOfTheLastTask() throws OwnException {
+
+        LocalTime result = null;
+        for (Task task : this.tasks) {
+            if (result == null && task.getEndTime() != null) {
+                result = task.getEndTime();
+            } else if (task.getEndTime() != null && result.isBefore(task.getEndTime())) {
+                result = task.getEndTime();
+            }
+        }
+
+        return result;
+
+    }
+
+    public LocalTime startTimeOfTheFirstTask() {
+
+        LocalTime result = null;
+        for (Task task : this.tasks) {
+            if (result == null && task.getStartTime() != null) {
+                result = task.getStartTime();
+            } else if (task.getStartTime() != null && result.isAfter(task.getStartTime())) {
+                result = task.getStartTime();
+            }
+        }
+
+        return result;
+
+    }
+
     public long getSumPerDay() {
 
+        this.refreshStatistics();
         return this.sumPerDay;
 
     }
@@ -120,6 +176,7 @@ public class WorkDay {
      */
     public long getExtraMinPerDay() {
 
+        this.refreshStatistics();
         return this.sumPerDay - this.requiredMinPerDay;
 
     }
@@ -129,24 +186,16 @@ public class WorkDay {
  *         boolean method should be able to decide if the t Task has a common time interval with any 
  *         existing Task's time interval in the tasks list
      */
-    public boolean isSeparatedTime(Task t) {
+    public boolean isSeparatedTime(Task t) throws OwnException {
 
         for (Task t1 : this.tasks) {
-            if (t1.getStartTime() == t.getStartTime() || t.getEndTime() == t1.getEndTime()) {
-                return true;
-            }
-
-            if (Duration.between(t1.getStartTime(), t.getStartTime()).toMinutes() > 0 && Duration.between(t.getStartTime(), t1.getEndTime()).toMinutes() > 0) {
-                return true;
-            }
-
-            if (Duration.between(t.getEndTime(), t1.getEndTime()).toMinutes() > 0 && Duration.between(t1.getStartTime(), t.getEndTime()).toMinutes() > 0) {
-                return true;
+            if (!super.isSeparatedTime(t1.getStartTime(), t1.getEndTime(), t.getStartTime(), t.getEndTime())) {
+                return false;
             }
 
         }
 
-        return false;
+        return true;
     }
 
     /*
@@ -154,16 +203,17 @@ public class WorkDay {
  *         void add a task to the list of tasks, if length is multiple of the quarter hour and the task
  *         time intervals have no common parts, the else part will be implemented later
      */
-    public void addTask(Task t) {
+    public void addTask(Task t) throws OwnException {
 
-        //     if (t.isMultipleQuarterHour()
-        //           && !this.isSeparatedTime(t)) {
-        this.insertTask(t);
+        if (!this.isSeparatedTime(t)) {
+            throw new OwnException("NotSeparatedTimesException");
+        } else {
+            this.insertTask(t);
 
-        // }
+        }
     }
 
-    private void insertTask(Task taskI) {
+    private void insertTask(Task taskI) throws OwnException {
 
         if (this.tasks.isEmpty()) {
             this.tasks = new ArrayList();
@@ -221,9 +271,9 @@ public class WorkDay {
 
         LocalDate aDay = this.getActualDay();
 
-        String str = aDay.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ROOT);
+        String str = aDay.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ROOT).toUpperCase().trim();
 
-        if (str == "Sun" || str == "Sat") {
+        if (str.equalsIgnoreCase("SUN") || str.equalsIgnoreCase("SAT")) {
 
             return false;
 
@@ -233,7 +283,7 @@ public class WorkDay {
 
     }
 
-    public List<Task> listTask(boolean bool) {
+    public List<Task> listTask(boolean bool) throws OwnException {
 
         int i = 1;
         List<Task> returnTasks = new ArrayList();
@@ -265,7 +315,7 @@ public class WorkDay {
         return true;
     }
 
-    public void updateTask(Task TaskI) {
+    public void updateTask(Task TaskI) throws OwnException {
 
         if (!this.isNewTask(TaskI)) {
 
@@ -284,7 +334,7 @@ public class WorkDay {
         }
     }
 
-    public void deleteTask(int index) {
+    public void deleteTask(int index) throws OwnException {
 
         if (this.tasks.isEmpty()) {
             return;
@@ -301,14 +351,42 @@ public class WorkDay {
 
     }
 
-    public void refreshStatistics() {
+    public void refreshStatistics() { //throws OwnException {
 
         this.sumPerDay = 0;
 
         for (Task task : this.tasks) {
-            if (!task.getEndTimeToString().isEmpty())
-            this.sumPerDay += Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
-            
+            if (!task.getEndTimeToString().isEmpty()) {
+                this.sumPerDay += Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
+            }
+
+        }
+    }
+
+    public void setRequiredMinPerDay(long requiredMinPerDayI) throws OwnException {
+        if (requiredMinPerDayI <= 0) {
+
+            throw new OwnException("NegativeMinutesOfWorkException");
+
+        } else {
+            this.requiredMinPerDay = requiredMinPerDayI;
+            this.refreshStatistics();
+        }
+
+    }
+
+    public void setActualDay(int[] actualDayI) throws OwnException {
+        if (actualDayI.length != 3) {
+            throw new OwnException("Is array problem");
+        } else {
+            LocalDate date = LocalDate.of(actualDayI[0], actualDayI[1], actualDayI[2]);
+            if (date.isAfter(LocalDate.now())) {
+                throw new OwnException("FutureWorkException");
+
+            } else {
+                this.actualDay = new int[3];
+                this.actualDay = actualDayI;
+            }
         }
     }
 }
