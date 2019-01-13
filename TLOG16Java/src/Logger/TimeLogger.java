@@ -10,13 +10,17 @@ import Logger.WorkMonth;
 import java.util.ArrayList;
 import timelogger.exceptions.OwnException;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author stampel
  */
 public class TimeLogger {
 
-    private List<WorkMonth> months;
+    @Getter @Setter private List<WorkMonth> months;
 
     public TimeLogger(List<WorkMonth> monthsI) {
 
@@ -34,12 +38,12 @@ public class TimeLogger {
 
     /*
  * getter for months
-     */
+     *//*
     public List<WorkMonth> getMonths() {
 
         return this.months;
 
-    }
+    }*/
 
     /*
  * List for months

@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 import timelogger.exceptions.OwnException;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
+
 /**
  *
  * @author stampel
@@ -25,9 +30,9 @@ import timelogger.exceptions.OwnException;
  */
 public class WorkDay extends Util {
 
-    private List<Task> tasks;
-    private long requiredMinPerDay;
-    private int[] actualDay;
+    @Getter private List<Task> tasks;
+    @Getter @Setter private long requiredMinPerDay;
+    @Setter private int[] actualDay = new int[3];
     private long sumPerDay; //calculations
 
     public WorkDay(int[] actualDayI,
@@ -106,20 +111,6 @@ public class WorkDay extends Util {
         this.tasks = new ArrayList();
     }
 
-    /* 
-  * getters for requiredMinPerDay, sumPerDay and actualDay 
-     */
-    public long getRequiredMinPerDay() {
-
-        return this.requiredMinPerDay;
-
-    }
-
-    public List<Task> getTasks() {
-
-        return this.tasks;
-
-    }
 
     public LocalTime endTimeOfTheLastTask() throws OwnException {
 
@@ -356,13 +347,13 @@ public class WorkDay extends Util {
         this.sumPerDay = 0;
 
         for (Task task : this.tasks) {
-            if (!task.getEndTimeToString().isEmpty()) {
+            if (!task.getEndTimeString().isEmpty()) {
                 this.sumPerDay += Duration.between(task.getStartTime(), task.getEndTime()).toMinutes();
             }
 
         }
     }
-
+/*
     public void setRequiredMinPerDay(long requiredMinPerDayI) throws OwnException {
         if (requiredMinPerDayI <= 0) {
 
@@ -374,7 +365,8 @@ public class WorkDay extends Util {
         }
 
     }
-
+*/
+    /*
     public void setActualDay(int[] actualDayI) throws OwnException {
         if (actualDayI.length != 3) {
             throw new OwnException("Is array problem");
@@ -388,5 +380,5 @@ public class WorkDay extends Util {
                 this.actualDay = actualDayI;
             }
         }
-    }
+    }*/
 }
