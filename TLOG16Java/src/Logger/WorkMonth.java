@@ -12,6 +12,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import timelogger.exceptions.OwnException;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
+
 /**
  *
  * @author stampel
@@ -21,8 +26,8 @@ import timelogger.exceptions.OwnException;
  */
 public class WorkMonth {
 
-    private List<WorkDay> days;
-    private LocalDate date;
+    @Getter private List<WorkDay> days;
+    @Getter private LocalDate date;
     private long sumPerMonth;
     private long requiredMinPerMonth;
 
@@ -41,15 +46,15 @@ public class WorkMonth {
     }
 
     /* getters for all the fields */
-    public List<WorkDay> getDays() {
-        return this.days;
-    }
+//    public List<WorkDay> getDays() {
+//        return this.days;
+//    }
 
-    public LocalDate getDate() {
-
-        return this.date;
-
-    }
+//    public LocalDate getDate() {
+//
+//        return this.date;
+//
+//    }
 
     public long getSumPerMonth() {
 
