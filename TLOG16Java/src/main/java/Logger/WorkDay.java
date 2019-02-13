@@ -31,8 +31,8 @@ import lombok.Setter;
 public class WorkDay extends Util {
 
     @Getter private List<Task> tasks;
-    @Getter @Setter private long requiredMinPerDay;
-    @Setter private int[] actualDay = new int[3];
+    @Getter private long requiredMinPerDay;
+    private int[] actualDay = new int[3];
     private long sumPerDay; //calculations
 
     public WorkDay(int[] actualDayI,
@@ -353,7 +353,7 @@ public class WorkDay extends Util {
 
         }
     }
-/*
+
     public void setRequiredMinPerDay(long requiredMinPerDayI) throws OwnException {
         if (requiredMinPerDayI <= 0) {
 
@@ -365,8 +365,7 @@ public class WorkDay extends Util {
         }
 
     }
-*/
-    /*
+   
     public void setActualDay(int[] actualDayI) throws OwnException {
         if (actualDayI.length != 3) {
             throw new OwnException("Is array problem");
@@ -380,5 +379,5 @@ public class WorkDay extends Util {
                 this.actualDay = actualDayI;
             }
         }
-    }*/
+    }
 }
