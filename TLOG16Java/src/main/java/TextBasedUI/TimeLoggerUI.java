@@ -56,7 +56,7 @@ public class TimeLoggerUI {
 
     public boolean TimeLoggerUICreat(int input, TimeLogger timeLogger) {
         switch (input) {
-            
+
             case 0: // Exit
                 return false;
             case 1: // List months: shows a counter, the year & the month line by line (example: 1. 2016-09, 2. 2016-10, ...)
@@ -68,7 +68,7 @@ public class TimeLoggerUI {
                 list all workdays of this month */
                 listDays(timeLogger);
                 break;
-                
+
             case 3: // List tasks for a specific day (ask for month & day)
                 listTasks(timeLogger);
                 break;
@@ -112,8 +112,7 @@ public class TimeLoggerUI {
                 break;
         }
         return true;
-        
-        
+
     }
 
     public void listMonths(TimeLogger timeLogger) {
@@ -225,13 +224,18 @@ public class TimeLoggerUI {
 
     public void addNewMonth(TimeLogger timeLogger) {
 
-        Scanner in = new Scanner(System.in);
-        System.out.print("Year: ");
-        int year = in.nextInt();
-        System.out.print("Month: ");
-        int month = in.nextInt();
-        WorkMonth wm = new WorkMonth(year, month);
-        timeLogger.addMonth(wm);
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.print("Year: ");
+            int year = in.nextInt();
+            System.out.print("Month: ");
+            int month = in.nextInt();
+            WorkMonth wm = new WorkMonth(year, month);
+            timeLogger.addMonth(wm);
+
+        } catch (OwnException ex) {
+            System.out.println(ex.getMessage());
+        }
 
     }
 
@@ -309,18 +313,22 @@ public class TimeLoggerUI {
             System.out.println("Is wrong input! Then hours = 7.5! " + ex.getMessage());
             hours = (float) 7.5;
         }
+        try {
+            float minuteFloat = hours * 60;
 
-        float minuteFloat = hours * 60;
+            int minute = (int) minuteFloat;
 
-        int minute = (int) minuteFloat;
+            WorkDay wd = new WorkDay(actualDay, minute);
+            WorkMonth wm = timeLogger.getMonths().get(month);
+            wm.addWorkDay(wd);
+            if (timeLogger.isNewMonth(wm)) {
+                timeLogger.addMonth(wm);
+            } else {
+                timeLogger.updateMonth(wm);
+            }
 
-        WorkDay wd = new WorkDay(actualDay, minute);
-        WorkMonth wm = timeLogger.getMonths().get(month);
-        wm.addWorkDay(wd);
-        if (timeLogger.isNewMonth(wm)) {
-            timeLogger.addMonth(wm);
-        } else {
-            timeLogger.updateMonth(wm);
+        } catch (OwnException ex) {
+            System.out.println(ex.getMessage());
         }
 
     }
@@ -485,7 +493,7 @@ public class TimeLoggerUI {
             taskNumber--;
 
             timeLogger.deleteTask(monthAndDayIndex[0], monthAndDayIndex[1], taskNumber);
-            
+
         } catch (OwnException ex) {
             System.out.println(ex.getMessage());
         }
@@ -495,7 +503,7 @@ public class TimeLoggerUI {
     Modify task: ask for month, day, task, let change every fields 
     (shows previous value in braces, if the input is empty, don't change the value!)
      */
-    public void modifyTask(TimeLogger timeLogger)  {
+    public void modifyTask(TimeLogger timeLogger) {
 
         try {
             int[] mdIndex = this.listTasks(timeLogger);

@@ -22,7 +22,7 @@ import lombok.Setter;
  */
 public class Task extends Util {
 
-    @Getter @Setter private String taskId;
+    @Getter private String taskId;
     @Getter @Setter private String comment;
     @Getter
     private String startTimeString;
@@ -414,7 +414,7 @@ public class Task extends Util {
 
     }
 
-    /*    public String getStartTimeToString() {
+    public String getStartTimeToString() {
 
         return this.startTimeString;
 
@@ -427,7 +427,7 @@ public class Task extends Util {
         
 
     }
-     */
+
     public long getMinPerTask() throws OwnException {
 
         if (this.endTimeString == null || this.endTimeString.isEmpty()) {
@@ -639,7 +639,7 @@ public class Task extends Util {
         }
 
     }
-/*
+
     public void setTaskId(String taskId) throws OwnException {
 
         if (taskId == null || taskId.isEmpty()) {
@@ -655,7 +655,7 @@ public class Task extends Util {
         }
 
     }
-*/
+
 /*    public void setComment(String comment) {
 
         this.comment = comment;

@@ -5,6 +5,7 @@
  */
 package tlog16java;
 
+import Logger.Util;
 import Logger.Task;
 import Logger.WorkDay;
 import Logger.WorkMonth;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-//import timelogger.exceptions.OwnException;
+import timelogger.exceptions.OwnException;
 
 /**
  *
@@ -26,7 +27,6 @@ class TLOG16Java {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
 
         List<WorkMonth> months = new ArrayList();
         TimeLogger TL = new TimeLogger(months);
@@ -37,7 +37,7 @@ class TLOG16Java {
 
             TimeLoggerUI tlui = new TimeLoggerUI();
             if (!tlui.TimeLoggerUICreat(i, TL)) {
-                
+
                 return;
             }
         }
